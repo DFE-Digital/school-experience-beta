@@ -1,0 +1,27 @@
+﻿@model SchoolExperienceUi.Models.Candidate.DiaryViewModel
+
+@{
+    ViewData["Title"] = "Diary";
+}
+
+<h2>Diary</h2>
+
+<hr />
+
+<div id="calendar" class="govuk-table"></div>
+
+<hr />
+
+<div>
+    <a asp-action="Index" class="govuk-back-link">Back</a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/lib/moment/moment.js"></script>
+    <script type="text/javascript" src="~/lib/full-calendar/fullcalendar.js"></script>
+    <script type="text/javascript" src="~/javascripts/candidate/diary.js"></script>
+}
+
+@section head {
+    <link rel='stylesheet' href='~/lib/full-calendar/fullcalendar.css' />
+}

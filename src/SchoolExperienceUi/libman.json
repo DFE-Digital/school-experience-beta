@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.3.1",
+      "files": [ "jquery.js", "jquery.min.map", "jquery.min.js" ],
+      "destination": "wwwroot/lib/jquery/dist/"
+    },
+    {
+      "library": "jquery-validate@1.17.0",
+      "files": [ "additional-methods.js", "additional-methods.min.js", "jquery.validate.js", "jquery.validate.min.js" ],
+      "destination": "wwwroot/lib/jquery-validation/dist/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.10",
+      "files": [ "jquery.validate.unobtrusive.js", "jquery.validate.unobtrusive.min.js" ],
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "moment.js@2.22.2",
+      "files": [
+        "moment.js",
+        "moment.min.js"
+        ],
+      "destination": "wwwroot/lib/moment/"
+    },
+    {
+      "library": "fullcalendar@3.9.0",
+      "files": [
+        "fullcalendar.js",
+        "fullcalendar.min.js",
+        "fullcalendar.css",
+        "fullcalendar.min.css",
+        "fullcalendar.print.css",
+        "fullcalendar.print.min.css"
+      ],
+      "destination": "wwwroot/lib/full-calendar/"
+    }
+  ]
+}

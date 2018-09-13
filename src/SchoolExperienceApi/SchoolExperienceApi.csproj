@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+    <UserSecretsId>47aff185-b037-4c3f-9530-fa96ab62342e</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/55674ca0-fb0d-42ce-8728-155f3a05f28b/resourcegroups/SchoolExperienceBeta/providers/microsoft.insights/components/schoolexperiencebetaapi</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/55674ca0-fb0d-42ce-8728-155f3a05f28b/resourcegroups/SchoolExperienceBeta/providers/microsoft.insights/components/schoolexperiencebetaapi</ApplicationInsightsAnnotationResourceId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.3" />
+    <PackageReference Include="Polly" Version="6.1.0" />
+    <PackageReference Include="Polly.Extensions.Http" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SchoolExperienceApiDto\SchoolExperienceApiDto.csproj" />
+    <ProjectReference Include="..\SchoolExperienceBaseTypes\SchoolExperienceBaseTypes.csproj" />
+    <ProjectReference Include="..\SchoolExperienceServices\SchoolExperienceServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,98 @@
+﻿@model SchoolExperienceUi.Models.Candidate.FindSchoolViewModel
+
+@{
+    ViewData["Title"] = "Find A School";
+}
+
+<form asp-action="FindSchools">
+    <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+            <h1 class="govuk-fieldset__heading">
+                What is your address?
+            </h1>
+        </legend>
+
+        <div asp-validation-summary="ModelOnly" class="govuk-error-summary"></div>
+
+        <div class="govuk-form-group">
+            <label asp-for="PostCode" class="govuk-label"></label>
+            <input asp-for="PostCode" class="govuk-input" />
+            <span asp-validation-for="PostCode" class="govuk-error-message"></span>
+        </div>
+
+        <div class="govuk-form-group">
+            <label asp-for="SearchDistanceInMiles" class="govuk-label"></label>
+            <input asp-for="SearchDistanceInMiles" class="govuk-input govuk-input--width-10" />
+            <span asp-validation-for="SearchDistanceInMiles" class="govuk-error-message"></span>
+        </div>
+
+        <div class="govuk-form-group">
+            <input type="submit" value="Search" class="govuk-button" />
+        </div>
+    </fieldset>
+</form>
+
+@if (Model.Schools != null)
+{
+    <hr />
+
+    if (Model.Schools.Any())
+    {
+        <table class="govuk-table">
+            <caption class="govuk-table__caption">Nearest Schools</caption>
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header" scope="col">
+                        @Html.DisplayNameFor(model => model.Schools.First().Name)
+                    </th>
+                    <th class="govuk-table__header" scope="col">
+                        @Html.DisplayNameFor(model => model.Schools.First().ContactName)
+                    </th>
+                    <th class="govuk-table__header" scope="col">
+                        @Html.DisplayNameFor(model => model.Schools.First().Address)
+                    </th>
+                    <th class="govuk-table__header govuk-table__header--numeric" scope="col">
+                        @Html.DisplayNameFor(model => model.Schools.First().Distance)
+                    </th>
+                    <th class="govuk-table__header" scope="col">
+                        @Html.DisplayNameFor(model => model.Schools.First().SchoolType)
+                    </th>
+                    <th class="govuk-table__header" scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+
+                @foreach (var item in Model.Schools.OrderBy(x=>x.Distance.Metres))
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell ">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td class="govuk-table__cell ">
+                            @Html.DisplayFor(modelItem => item.ContactName)
+                        </td>
+                        <td class="govuk-table__cell ">
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td class="govuk-table__cell govuk-table__cell--numeric">
+                            @item.Distance.Miles.ToString("F1")
+                        </td>
+                        <td class="govuk-table__cell ">
+                            @Html.DisplayFor(modelItem => item.SchoolType)
+                        </td>
+                        <td class="govuk-table__cell ">
+                            @Html.ActionLink("Details", "Details", new { id = item.SchoolId })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2 class="govuk-error-message"> No schools within @Model.SearchDistance.Kilometres km.</h2>
+    }
+}
+
+<a asp-action="Index" class="govuk-back-link">Back</a>
+

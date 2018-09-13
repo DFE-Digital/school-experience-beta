@@ -1,0 +1,41 @@
+﻿@model SchoolExperienceUi.Models.Candidate.IndexViewModel
+
+@{
+    ViewData["Title"] = "Candidate Home";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+    <a asp-action="FindSchools">Find Schools</a>
+</p>
+
+<h2>Bookings</h2>
+<a asp-action="Diary">Add availability</a>
+<a asp-action="Book">Book</a>
+
+@if (Model.Bookings.Any())
+{
+    <table class="govuk-table">
+        <thead class="govuk-table__header">
+            <tr>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Bookings)
+            {
+                <tr>
+                    <td>@item.When.ToShortDateString()<br />@item.When.ToShortTimeString()</td>
+                    <td>@item.SchoolName</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
+                        @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
+                        @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
