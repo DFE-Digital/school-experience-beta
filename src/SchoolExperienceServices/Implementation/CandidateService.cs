@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SchoolExperienceApiDto.School;
+using SchoolExperienceApiDto.Candidate;
 using SchoolExperienceBaseTypes;
 using SchoolExperienceData;
 using SchoolExperienceData.Entities;
@@ -97,11 +97,11 @@ namespace SchoolExperienceServices.Implementation
             };
         }
 
-        public async Task<GetDiaryEntriesResult> GetDiaryEventsAsync(Guid userId, DateTime start, DateTime end)
+        public async Task<GetDiaryEntriesResponse> GetDiaryEventsAsync(Guid userId, DateTime start, DateTime end)
         {
             var events = await _dbContext.CandidateDiarys
                 .Where(x => x.Candidate.Id == userId && x.When >= start && x.When <= end)
-                .Select(x => new GetDiaryEntriesResult.DiaryEvent
+                .Select(x => new GetDiaryEntriesResponse.DiaryEvent
                 {
                     EntryType = x.EntryType,
                     Id = x.Id,
@@ -110,7 +110,7 @@ namespace SchoolExperienceServices.Implementation
                 })
                 .ToListAsync();
 
-            return new GetDiaryEntriesResult
+            return new GetDiaryEntriesResponse
             {
                 Events = events,
             };

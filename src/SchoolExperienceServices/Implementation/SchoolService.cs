@@ -1,19 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolExperienceApiDto.School;
 using SchoolExperienceBaseTypes;
+using SchoolExperienceData;
 
 namespace SchoolExperienceServices.Implementation
 {
     internal class SchoolService : ISchoolService
     {
-        public async Task<FindSchoolsResult> FindSchoolsAsync(string postCode, Distance searchDistance)
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IMapper _mapper;
+
+        public SchoolService(ApplicationDbContext dbContext, IMapper mapper)
         {
-            var schools = new List<FindSchoolsResult.School>();
+            _dbContext = dbContext;
+            _mapper = mapper;
+        }
+
+        public Task<BookCandidateResponse> CreateBooking(string userId, string schoolId, string candidateId, DateTime when)
+            => throw new NotImplementedException();
+
+        public async Task<FindSchoolsResponse> FindSchoolsAsync(string postCode, Distance searchDistance)
+        {
+            var schools = new List<FindSchoolsResponse.School>();
 
             if (searchDistance.Kilometres >= 1)
             {
-                schools.Add(new FindSchoolsResult.School
+                schools.Add(new FindSchoolsResponse.School
                 {
                     SchoolId = "1",
                     SchoolType = SchoolType.Primary,
@@ -26,7 +43,7 @@ namespace SchoolExperienceServices.Implementation
 
             if (searchDistance.Kilometres >= 2)
             {
-                schools.Add(new FindSchoolsResult.School
+                schools.Add(new FindSchoolsResponse.School
                 {
                     SchoolId = "2",
                     SchoolType = SchoolType.Primary,
@@ -39,7 +56,7 @@ namespace SchoolExperienceServices.Implementation
 
             if (searchDistance.Kilometres >= 3)
             {
-                schools.Add(new FindSchoolsResult.School
+                schools.Add(new FindSchoolsResponse.School
                 {
                     SchoolId = "3",
                     SchoolType = SchoolType.Secondary,
@@ -50,11 +67,28 @@ namespace SchoolExperienceServices.Implementation
                 });
             }
 
-            return await Task.FromResult(new FindSchoolsResult
+            return await Task.FromResult(new FindSchoolsResponse
             {
                 SearchDistance = searchDistance,
                 Schools = schools,
             });
+        }
+
+        public async Task<GetDiaryEntriesResponse> GetDiaryEventsAsync(string userId, string schoolId, DateTime start, DateTime end)
+        {
+            var entries = await _dbContext.SchoolDiary
+                .Where(x => x.School.Id == schoolId && x.When >= start && x.When <= end)
+                .Select(x => new GetDiaryEntriesResponse.DiaryEvent
+                {
+                    Id = x.Id,
+                    When = x.When,
+                    CandidateName = x.CandidateDiary.Candidate.Name,
+                    CandidateSubject = x.CandidateDiary.Candidate.Subject,
+                    EntryType = DiaryEntryType.Booked,
+                })
+                .ToListAsync();
+
+            return new GetDiaryEntriesResponse { Events = entries };
         }
     }
 }

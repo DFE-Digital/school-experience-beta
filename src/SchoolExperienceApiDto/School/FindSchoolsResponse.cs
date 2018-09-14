@@ -3,7 +3,7 @@ using SchoolExperienceBaseTypes;
 
 namespace SchoolExperienceApiDto.School
 {
-    public class FindSchoolsResult
+    public class FindSchoolsResponse
     {
         public Distance SearchDistance { get; set; }
         public IEnumerable<School> Schools { get; set; }

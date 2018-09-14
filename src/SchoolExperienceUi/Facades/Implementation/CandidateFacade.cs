@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using SchoolExperienceApiDto.School;
+using SchoolExperienceApiDto.Candidate;
 using SchoolExperienceBaseTypes;
 
 namespace SchoolExperienceUi.Facades.Implementation
@@ -34,9 +34,9 @@ namespace SchoolExperienceUi.Facades.Implementation
             return await DeleteAsync<DeleteDiaryEntryResult>($"{BaseUrl}deletediaryentry?userId={userId}&id={id}");
         }
 
-        public async Task<GetDiaryEntriesResult> GetDiaryEntriesAsync(Guid userId, DateTime start, DateTime end)
+        public async Task<GetDiaryEntriesResponse> GetDiaryEntriesAsync(Guid userId, DateTime start, DateTime end)
         {
-            return await GetStringAsync<GetDiaryEntriesResult>($"{BaseUrl}getdiaryentries?userId={userId}&start={start:o}&end={end:o}");
+            return await GetStringAsync<GetDiaryEntriesResponse>($"{BaseUrl}getdiaryentries?userId={userId}&start={start:o}&end={end:o}");
         }
     }
 }

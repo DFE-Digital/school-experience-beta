@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using SchoolExperienceBaseTypes;
 
-namespace SchoolExperienceApiDto.School
+namespace SchoolExperienceApiDto.Candidate
 {
-    public class GetDiaryEntriesResult
+    public class GetDiaryEntriesResponse
     {
         public IEnumerable<DiaryEvent> Events { get; set; }
 

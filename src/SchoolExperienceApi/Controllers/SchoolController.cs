@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SchoolExperienceApiDto.School;
 using SchoolExperienceBaseTypes;
@@ -20,9 +21,26 @@ namespace SchoolExperienceApi.Controllers
 
         [HttpGet]
         [Route("FindSchools")]
-        public async Task<FindSchoolsResult> FindSchools(string postCode, int distance)
+        public async Task<FindSchoolsResponse> FindSchools(string postCode, int distance)
         {
             var result = await _schoolService.FindSchoolsAsync(postCode, new Distance { Metres = distance });
+            return result;
+        }
+
+        [HttpGet]
+        [Route("GetDiaryEntries")]
+        public async Task<IActionResult> GetDiaryEntries(GetDiaryEntriesRequest request)
+        {
+            var result = await _schoolService.GetDiaryEventsAsync(request.UserId, request.SchoolId, request.Start, request.End);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("BookCandidate")]
+        public async Task<BookCandidateResponse> BookCandidate(BookCandidateRequest request)
+        {
+            var result = await _schoolService.CreateBooking(request.UserId, request.SchoolId, request.CandidateId, request.Date);
             return result;
         }
     }

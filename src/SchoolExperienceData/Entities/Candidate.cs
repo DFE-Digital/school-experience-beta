@@ -10,6 +10,8 @@ namespace SchoolExperienceData.Entities
 
         public string Name { get; set; }
 
+        public string Subject { get; set; }
+
         public ICollection<CandidateDiary> Events { get; set; }
     }
 }

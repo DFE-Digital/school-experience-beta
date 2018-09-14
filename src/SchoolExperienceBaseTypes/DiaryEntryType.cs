@@ -7,5 +7,7 @@
         Free,
 
         Booked,
+
+        Reserved,
     }
 }

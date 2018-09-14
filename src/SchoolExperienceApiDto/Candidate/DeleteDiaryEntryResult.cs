@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SchoolExperienceApiDto.School
+﻿namespace SchoolExperienceApiDto.Candidate
 {
     public class DeleteDiaryEntryResult
     {

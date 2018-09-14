@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SchoolExperienceApiDto.School;
-using SchoolExperienceBaseTypes;
+using SchoolExperienceApiDto.Candidate;
 using SchoolExperienceServices;
 
 namespace SchoolExperienceApi.Controllers
@@ -21,15 +18,6 @@ namespace SchoolExperienceApi.Controllers
             _candidateService = candidateService;
         }
 
-        [HttpGet]
-        [Route("GetDiaryEntries")]
-        public async Task<IActionResult> GetDiaryEntries(Guid userId, DateTime start, DateTime end)
-        {
-            var result = await _candidateService.GetDiaryEventsAsync(userId, start, end);
-
-            return Ok(result);
-        }
-
         [HttpPost]
         [Route("CreateDiaryEntry")]
         public async Task<IActionResult> CreateDiaryEntry([FromBody] CreateDiaryEntryRequest request)
@@ -44,6 +32,15 @@ namespace SchoolExperienceApi.Controllers
         public async Task<IActionResult> DeleteDiaryEntry(Guid userId, int id)
         {
             var result = await _candidateService.DeleteDiaryEntriesAsync(userId, id);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetDiaryEntries")]
+        public async Task<IActionResult> GetDiaryEntries(Guid userId, DateTime start, DateTime end)
+        {
+            var result = await _candidateService.GetDiaryEventsAsync(userId, start, end);
 
             return Ok(result);
         }

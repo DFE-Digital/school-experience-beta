@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SchoolExperienceBaseTypes;
 
-namespace SchoolExperienceApiDto.School
+namespace SchoolExperienceApiDto.Candidate
 {
     public class CreateDiaryEntryResult
     {
