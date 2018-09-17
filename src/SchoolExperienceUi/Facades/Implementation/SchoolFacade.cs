@@ -16,15 +16,33 @@ namespace SchoolExperienceUi.Facades.Implementation
         {
         }
 
-        public Task<BookCandidateResponse> BookCandidate(string userId, string schoolId, string candidateId, DateTime when) 
-            => throw new NotImplementedException();
+        public async Task<BookCandidateResponse> BookCandidate(string userId, string schoolId, string candidateId, DateTime when)
+        {
+            var request = new BookCandidateRequest
+            {
+                UserId = userId,
+                SchoolId = schoolId,
+                CandidateId = candidateId,
+                Date = when,
+            };
 
-        public Task<CancelBookingResponse> CancelBooking(string userId, int id) 
-            => throw new NotImplementedException();
+            return await PostAsync<BookCandidateRequest, BookCandidateResponse>($"{BaseUrl}bookcandidate", request);
+        }
+
+        public async Task<CancelBookingResponse> CancelBooking(string userId, int id)
+        {
+            var request = new CancelBookingRequest
+            {
+                UserId = userId,
+                BookingId = id,
+            };
+
+            return await PostAsync<CancelBookingRequest, CancelBookingResponse>($"{BaseUrl}cancelbooking", request);
+        }
 
         public async Task<FindSchoolsResponse> FindSchoolsAsync(string postCode, Distance searchDistance)
         {
-            return await GetStringAsync<FindSchoolsResponse>($"/api/school/findschools?postcode={postCode}&distance={searchDistance.Metres:F0}");
+            return await GetStringAsync<FindSchoolsResponse>($"{BaseUrl}findschools?postcode={postCode}&distance={searchDistance.Metres:F0}");
         }
 
         public async Task<GetDiaryEntriesResponse> GetDiaryEntriesAsync(string userId, string schoolId, DateTime start, DateTime end)

@@ -16,7 +16,7 @@ namespace SchoolExperienceUi.Controllers
 
         private readonly IMapper _mapper;
 
-        private static readonly Guid UserId = new Guid("11111111-1111-1111-1111-111111111111");
+        private static readonly string UserId = "11111111-1111-1111-1111-111111111111";
 
         public CandidateController(IMapper mapper, ISchoolFacade schoolService, ICandidateFacade candidateFacade)
         {

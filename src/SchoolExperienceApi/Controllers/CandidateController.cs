@@ -29,7 +29,7 @@ namespace SchoolExperienceApi.Controllers
 
         [HttpDelete]
         [Route("DeleteDiaryEntry")]
-        public async Task<IActionResult> DeleteDiaryEntry(Guid userId, int id)
+        public async Task<IActionResult> DeleteDiaryEntry(string userId, int id)
         {
             var result = await _candidateService.DeleteDiaryEntriesAsync(userId, id);
 
@@ -38,7 +38,7 @@ namespace SchoolExperienceApi.Controllers
 
         [HttpGet]
         [Route("GetDiaryEntries")]
-        public async Task<IActionResult> GetDiaryEntries(Guid userId, DateTime start, DateTime end)
+        public async Task<IActionResult> GetDiaryEntries(string userId, DateTime start, DateTime end)
         {
             var result = await _candidateService.GetDiaryEventsAsync(userId, start, end);
 

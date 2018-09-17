@@ -7,8 +7,8 @@ namespace SchoolExperienceServices
 {
     public interface ICandidateService
     {
-        Task<GetDiaryEntriesResponse> GetDiaryEventsAsync(Guid userId, DateTime start, DateTime end);
-        Task<CreateDiaryEntryResult> CreateDiaryEntriesAsync(Guid userId, DateTime start, DateTime end, DiaryEntryType type);
-        Task<DeleteDiaryEntryResult> DeleteDiaryEntriesAsync(Guid userId, int id);
+        Task<GetDiaryEntriesResponse> GetDiaryEventsAsync(string userId, DateTime start, DateTime end);
+        Task<CreateDiaryEntryResult> CreateDiaryEntriesAsync(string userId, DateTime start, DateTime end, DiaryEntryType type);
+        Task<DeleteDiaryEntryResult> DeleteDiaryEntriesAsync(string userId, int id);
     }
 }

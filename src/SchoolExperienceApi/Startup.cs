@@ -34,7 +34,9 @@ namespace SchoolExperienceApi
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddOptions();
             services.AddServices();
+            services.AddEventServices(Configuration);
 
             services.AddAutoMapper();
         }

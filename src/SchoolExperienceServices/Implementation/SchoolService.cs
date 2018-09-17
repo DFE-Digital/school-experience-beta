@@ -2,27 +2,56 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SchoolExperienceApiDto.School;
 using SchoolExperienceBaseTypes;
 using SchoolExperienceData;
+using SchoolExperienceEvents;
 
 namespace SchoolExperienceServices.Implementation
 {
     internal class SchoolService : ISchoolService
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public SchoolService(ApplicationDbContext dbContext, IMapper mapper)
+        private readonly ICreateEventService _eventService;
+
+        public SchoolService(ApplicationDbContext dbContext, ICreateEventService eventService)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
+            _eventService = eventService;
         }
 
-        public Task<BookCandidateResponse> CreateBooking(string userId, string schoolId, string candidateId, DateTime when)
-            => throw new NotImplementedException();
+        public async Task<BookCandidateResponse> CreateBooking(string userId, string schoolId, string candidateId, DateTime when)
+        {
+            var candidate = await _dbContext.Candidates.FirstAsync(x => x.Id == Guid.Parse(candidateId));
+            var school = await _dbContext.Schools.FirstAsync(x => x.Id == schoolId);
+
+            var entry = new SchoolExperienceData.Entities.SchoolDiary
+            {
+                CandidateDiary = new SchoolExperienceData.Entities.CandidateDiary
+                {
+                    Candidate = candidate,
+                    School = school,
+                    EntryType = DiaryEntryType.Reserved,
+                    When = when,
+                },
+                School = school,
+                When = when,
+            };
+
+            _dbContext.SchoolDiary.Add(entry);
+            await _dbContext.SaveChangesAsync();
+
+            await _eventService.AddBooking(when, school.Id, school.Name, candidate.Id.ToString(), candidate.Name, candidate.Subject);
+
+            return new BookCandidateResponse
+            {
+                Status = BookCandidateResponse.ResultStatus.Success,
+                Text = $"{candidate.Name}({candidate.Subject})",
+                Id = entry.Id,
+            };
+        }
 
         public async Task<FindSchoolsResponse> FindSchoolsAsync(string postCode, Distance searchDistance)
         {
@@ -84,7 +113,7 @@ namespace SchoolExperienceServices.Implementation
                     When = x.When,
                     CandidateName = x.CandidateDiary.Candidate.Name,
                     CandidateSubject = x.CandidateDiary.Candidate.Subject,
-                    EntryType = DiaryEntryType.Booked,
+                    EntryType = x.CandidateDiary.EntryType,
                 })
                 .ToListAsync();
 

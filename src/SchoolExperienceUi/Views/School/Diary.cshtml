@@ -4,12 +4,16 @@
     ViewData["Title"] = "Diary";
 }
 
-<h2>Diary</h2>
+<h2 id="calendar-label">Diary</h2>
 
-<hr />
+<div role="application" aria-labelledby="calendar-label" aria-describedby="calendar-info">
 
-<div id="calendar" class="govuk-table"></div>
+    <hr />
 
+    <div id="calendar-info"></div>
+    <div id="calendar" role="grid" class="govuk-table"></div>
+
+</div>
 <hr />
 
 <div>

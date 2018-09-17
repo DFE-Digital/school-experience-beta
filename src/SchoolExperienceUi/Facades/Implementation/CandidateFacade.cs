@@ -16,7 +16,7 @@ namespace SchoolExperienceUi.Facades.Implementation
         {
         }
 
-        public async Task<CreateDiaryEntryResult> CreateDiaryEntryAsync(Guid userId, DateTime start, DateTime end, DiaryEntryType type)
+        public async Task<CreateDiaryEntryResult> CreateDiaryEntryAsync(string userId, DateTime start, DateTime end, DiaryEntryType type)
         {
             var request = new CreateDiaryEntryRequest
             {
@@ -29,12 +29,12 @@ namespace SchoolExperienceUi.Facades.Implementation
             return await PostAsync<CreateDiaryEntryRequest, CreateDiaryEntryResult>($"{BaseUrl}creatediaryentry", request);
         }
 
-        public async Task<DeleteDiaryEntryResult> DeleteDiaryEntryAsync(Guid userId, int id)
+        public async Task<DeleteDiaryEntryResult> DeleteDiaryEntryAsync(string userId, int id)
         {
             return await DeleteAsync<DeleteDiaryEntryResult>($"{BaseUrl}deletediaryentry?userId={userId}&id={id}");
         }
 
-        public async Task<GetDiaryEntriesResponse> GetDiaryEntriesAsync(Guid userId, DateTime start, DateTime end)
+        public async Task<GetDiaryEntriesResponse> GetDiaryEntriesAsync(string userId, DateTime start, DateTime end)
         {
             return await GetStringAsync<GetDiaryEntriesResponse>($"{BaseUrl}getdiaryentries?userId={userId}&start={start:o}&end={end:o}");
         }

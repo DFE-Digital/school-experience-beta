@@ -29,16 +29,16 @@ namespace SchoolExperienceApi.Controllers
 
         [HttpGet]
         [Route("GetDiaryEntries")]
-        public async Task<IActionResult> GetDiaryEntries(GetDiaryEntriesRequest request)
+        public async Task<IActionResult> GetDiaryEntries([FromQuery] GetDiaryEntriesRequest request)
         {
             var result = await _schoolService.GetDiaryEventsAsync(request.UserId, request.SchoolId, request.Start, request.End);
 
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("BookCandidate")]
-        public async Task<BookCandidateResponse> BookCandidate(BookCandidateRequest request)
+        public async Task<BookCandidateResponse> BookCandidate([FromBody] BookCandidateRequest request)
         {
             var result = await _schoolService.CreateBooking(request.UserId, request.SchoolId, request.CandidateId, request.Date);
             return result;

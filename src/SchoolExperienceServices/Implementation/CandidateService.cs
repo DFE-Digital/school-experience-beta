@@ -22,7 +22,7 @@ namespace SchoolExperienceServices.Implementation
             _mapper = mapper;
         }
 
-        public async Task<CreateDiaryEntryResult> CreateDiaryEntriesAsync(Guid userId, DateTime start, DateTime end, DiaryEntryType type)
+        public async Task<CreateDiaryEntryResult> CreateDiaryEntriesAsync(string userId, DateTime start, DateTime end, DiaryEntryType type)
         {
             if (end < start || end - start >= TimeSpan.FromDays(30))
             {
@@ -32,7 +32,7 @@ namespace SchoolExperienceServices.Implementation
             start = start.Date;
             end = end.Date;
 
-            var candidate = _dbContext.Candidates.First(x => x.Id == userId);
+            var candidate = _dbContext.Candidates.First(x => x.Id == Guid.Parse(userId));
 
             var existingEntries = await _dbContext.CandidateDiarys
                 .Where(x => x.Candidate == candidate && x.When >= start && x.When <= end)
@@ -73,10 +73,10 @@ namespace SchoolExperienceServices.Implementation
             };
         }
 
-        public async Task<DeleteDiaryEntryResult> DeleteDiaryEntriesAsync(Guid userId, int id)
+        public async Task<DeleteDiaryEntryResult> DeleteDiaryEntriesAsync(string userId, int id)
         {
             var result = DeleteDiaryEntryResult.DeleteResult.None;
-            var entry = _dbContext.CandidateDiarys.First(x => x.Candidate.Id == userId && x.Id == id);
+            var entry = _dbContext.CandidateDiarys.First(x => x.Candidate.Id == Guid.Parse(userId) && x.Id == id);
 
             switch (entry.EntryType)
             {
@@ -97,10 +97,11 @@ namespace SchoolExperienceServices.Implementation
             };
         }
 
-        public async Task<GetDiaryEntriesResponse> GetDiaryEventsAsync(Guid userId, DateTime start, DateTime end)
+        public async Task<GetDiaryEntriesResponse> GetDiaryEventsAsync(string userId, DateTime start, DateTime end)
         {
+            var candidateUserId = Guid.Parse(userId);
             var events = await _dbContext.CandidateDiarys
-                .Where(x => x.Candidate.Id == userId && x.When >= start && x.When <= end)
+                .Where(x => x.Candidate.Id == candidateUserId && x.When >= start && x.When <= end)
                 .Select(x => new GetDiaryEntriesResponse.DiaryEvent
                 {
                     EntryType = x.EntryType,

@@ -2,12 +2,19 @@
 {
     public class BookCandidateResponse
     {
-        public enum Status
+        public enum ResultStatus
         {
             None,
+
             Success,
+
+            NotAvailable,
+
             Conflict,
         }
-        public Status Result { get; set; }
+
+        public ResultStatus Status { get; set; }
+        public string Text { get; set; }
+        public int Id { get; set; }
     }
 }

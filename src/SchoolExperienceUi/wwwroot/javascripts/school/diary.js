@@ -11,6 +11,7 @@ const DeleteDiaryEntryResult = {
 };
 
 const schoolId = '22222222-2222-2222-2222-222222222222';
+const candidateId = '11111111-1111-1111-1111-111111111111';
 
 $(function () {
 
@@ -25,20 +26,26 @@ $(function () {
             data: { 'schoolId': schoolId },
             success: function (result) {
                 $(result.events).each(function (index, item) {
-                    if (item.isFree) {
-                        item.title = freeText;
-                        item.color = freeBackgroundColour;
-                        item.textColor = freeTextColour;
-                    }
                     if (item.isBusy) {
                         item.color = busyBackgroundColour;
                         item.textColor = busyTextColour;
+                        }
+                    else {
+                        item.color = freeBackgroundColour;
+                        item.textColor = freeTextColour;
                     }
                 });
                 return result.events;
             },
             color: 'blue',
             textColor: 'white'
+        },
+
+        selectable: true,
+        selectHelper: true,
+        select: function (start, end) {
+            bookCandidate(candidateId, start);
+            $('#calendar').fullCalendar('unselect');
         },
         eventClick: function (calEvent, jsEvent, view) {
             eventClick(calEvent);
@@ -49,11 +56,10 @@ $(function () {
     });
 
     function eventClick(event) {
-        if (event.isFree) {
-            bookCandidate(event.candidateId, event.date);
-        }
+        //if (!event.isFree) {
+        //}
         if (event.isBusy) {
-            unbookEvent('a');
+            removeEvent(event);
         }
     }
 
@@ -78,34 +84,20 @@ $(function () {
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify({ 'schoolId': schoolId, 'candidateId': candidateId, 'date': date.format() })
+            data: JSON.stringify({ 'schoolId': schoolId, 'candidateId': candidateId, 'when': date.format() })
         })
             .done(function (response) {
-                var events = [];
+                var event = {
+                    id: response.id,
+                    isFree: true,
+                    title: response.text,
+                    start: date,
+                    allDay: false,
+                    color: freeBackgroundColour,
+                    textColor: freeTextColour
+                };
 
-                $(response.events).each(function (index, item) {
-                    switch (item.result) {
-                        case 1: // 'Success':
-                            events.push(
-                                {
-                                    id: item.id,
-                                    isFree: true,
-                                    title: freeText,
-                                    start: item.when,
-                                    allDay: true,
-                                    color: freeBackgroundColour,
-                                    textColor: freeTextColour
-                                });
-                            break;
-
-                        case 2: //'Conflict':
-                            break;
-                    }
-                });
-
-                if (events.length > 0) {
-                    calendar.fullCalendar('addEventSource', events);
-                }
+                calendar.fullCalendar('renderEvent', event, true); // stick? = true
             })
             .fail(function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);

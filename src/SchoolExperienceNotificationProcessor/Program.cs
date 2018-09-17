@@ -49,7 +49,7 @@ namespace SchoolExperienceNotificationProcessor
             var p = new Program();
             var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
 
-            var queue = p.OpenQueue("notification");
+            var queue = p.OpenQueue("addbooking");
             var message = await queue.GetMessageAsync(TimeSpan.FromSeconds(15),
                 new QueueRequestOptions
                 {
