@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.EventGrid.Models;
@@ -38,35 +39,41 @@ namespace SchoolExperienceNotificationProcessor
 
         public async Task ProcessMessages()
         {
-            var messages = await GetEvents<EventGridEvent>(_queueName);
+            var messages = (await GetEvents<EventGridEvent>(_queueName).ConfigureAwait(false)).ToList();
 
-            foreach (var message in messages)
+            if (messages.Any())
             {
-                var data = JsonConvert.DeserializeObject<EventGridEvent>(message.AsString);
+                _logger.LogInformation($"Found {messages.Count} messages");
 
-                if (_eventProcessors.TryGetValue(data.Subject, out var processor))
+                foreach (var message in messages)
                 {
-                    try
+                    var data = JsonConvert.DeserializeObject<EventGridEvent>(message.AsString);
+
+                    if (_eventProcessors.TryGetValue(data.Subject, out var processor))
                     {
-                        if (data.Data is JObject jObject)
+                        try
                         {
-                            var notificationEvent = (INotificationEvent)jObject.ToObject(processor.MessageType);
-                            await processor.ProcessorAsync(notificationEvent);
-                            await DeleteEvent(_queueName, message);
+                            if (data.Data is JObject jObject)
+                            {
+                                _logger.LogInformation($"Message: {data.Subject}");
+                                var notificationEvent = (INotificationEvent)jObject.ToObject(processor.MessageType);
+                                await processor.ProcessorAsync(notificationEvent);
+                                await DeleteEvent(_queueName, message);
+                            }
+                            else
+                            {
+                                _logger.LogWarning($"Unknown message payload: {data.Data}");
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            _logger.LogWarning($"Unknown message payload: {data.Data}");
+                            _logger.LogWarning($"Message processing failed: {message.AsString}");
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        _logger.LogWarning($"Message processing failed: {message.AsString}");
+                        _logger.LogWarning($"Unknown message subject: {data.Subject}");
                     }
-                }
-                else
-                {
-                    _logger.LogWarning($"Unknown message subject: {data.Subject}");
                 }
             }
         }

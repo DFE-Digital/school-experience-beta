@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly.Registry;
-using SchoolExperienceEvents.AzureServices.Implementation;
 using SchoolExperienceEvents.Dto;
 
 namespace SchoolExperienceNotificationProcessor
 {
-    internal class NotificationService : HostedService
+    internal class NotificationService : BackgroundService
     {
         public const string PolicyRegistryKey = "NotificationService";
 

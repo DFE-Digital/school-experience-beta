@@ -54,7 +54,6 @@ namespace SchoolExperienceNotificationProcessor
                     configLogging.AddConsole();
                     configLogging.AddDebug();
                 })
-                //.UseConsoleLifetime()
                 .Build();
 
             using (host)
