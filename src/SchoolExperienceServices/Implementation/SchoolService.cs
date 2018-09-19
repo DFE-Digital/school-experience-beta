@@ -43,7 +43,7 @@ namespace SchoolExperienceServices.Implementation
             _dbContext.SchoolDiary.Add(entry);
             await _dbContext.SaveChangesAsync();
 
-            await _eventService.AddBooking(when, school.Id, school.Name, candidate.Id.ToString(), candidate.Name, candidate.Subject);
+            await _eventService.AddBooking(entry.Id.ToString(), when, school.Id, school.Name, candidate.Id.ToString(), candidate.Name, candidate.Subject);
 
             return new BookCandidateResponse
             {

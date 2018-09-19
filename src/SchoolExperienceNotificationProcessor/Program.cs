@@ -1,86 +1,87 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
+using Polly;
+using Polly.Caching;
+using Polly.Registry;
+using SchoolExperienceEvents.Implementation;
 
 namespace SchoolExperienceNotificationProcessor
 {
     internal class Program
     {
-        private readonly string StorageConnectionString = "DefaultEndpointsProtocol=https;AccountName=schoolexperiencebeta;AccountKey=jkZtrzupf+R8rpDk55mAXKOVCsMa/u3deEG5QxuaM8bAjmZSp+3/T5x5baUCchj76rE3cchZXN4PIgfBI9sGZA==;EndpointSuffix=core.windows.net";
-
-        public Program()
+        public static void Main(string[] args)
         {
-        }
-
-        public CloudStorageAccount CreateStorageAccountFromConnectionString(string storageConnectionString)
-        {
-            CloudStorageAccount storageAccount;
-            try
-            {
-                storageAccount = CloudStorageAccount.Parse(storageConnectionString);
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file - then restart the sample.");
-                Console.ReadLine();
-                throw;
-            }
-            catch (ArgumentException)
-            {
-                Console.WriteLine("Invalid storage account information provided. Please confirm the AccountName and AccountKey are valid in the app.config file - then restart the sample.");
-                Console.ReadLine();
-                throw;
-            }
-
-            return storageAccount;
-        }
-
-        private static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-            MainAsync();
-
-            Console.ReadLine();
-        }
-
-        private static async void MainAsync()
-        {
-            var p = new Program();
-            var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-
-            var queue = p.OpenQueue("addbooking");
-            var message = await queue.GetMessageAsync(TimeSpan.FromSeconds(15),
-                new QueueRequestOptions
+            var host = new HostBuilder()
+                .ConfigureAppConfiguration((hostContext, configApp) =>
                 {
-                    MaximumExecutionTime = TimeSpan.FromSeconds(10),
-                },
-                new OperationContext
+                    configApp.SetBasePath(Directory.GetCurrentDirectory());
+                    configApp.AddJsonFile("appsettings.json", optional: false);
+                    configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true);
+                    configApp.AddEnvironmentVariables();
+                    configApp.AddCommandLine(args);
+                    configApp.AddUserSecrets<NotificationServiceOptions>();
+                })
+                .ConfigureServices((hostContext, services) =>
                 {
-                },
-                cancellationTokenSource.Token
-            );
-            if (message != null)
-            {
-                Console.WriteLine($"Get Message: {message.Id}");
-                await queue.DeleteMessageAsync(message);
+                    services.AddSingleton<Polly.Caching.ISyncCacheProvider<CloudQueue>, DictionaryCacheProvider<CloudQueue>>();
+                    services.AddSingleton<Polly.Registry.IPolicyRegistry<string>, Polly.Registry.PolicyRegistry>((serviceProvider) =>
+                    {
+                        var registry = new PolicyRegistry();
+                        registry.Add(NotificationService.PolicyRegistryKey, Policy.Cache<CloudQueue>(serviceProvider.GetRequiredService<ISyncCacheProvider<CloudQueue>>(), TimeSpan.FromMinutes(5)));
+                        return registry;
+                    });
 
-                Console.WriteLine($"Message Deleted");
+                    Policy
+                        .Handle<Exception>()
+                        .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+
+
+                    services.AddLogging();
+                    services.AddHostedService<NotificationService>();
+
+                    services.Configure<NotificationServiceOptions>(hostContext.Configuration.GetSection(nameof(NotificationServiceOptions)));
+                })
+                .ConfigureLogging((hostContext, configLogging) =>
+                {
+                    configLogging.AddConsole();
+                    configLogging.AddDebug();
+                })
+                //.UseConsoleLifetime()
+                .Build();
+
+            using (host)
+            {
+                host.Start();
+
+                try
+                {
+                    host.WaitForShutdown();
+                }
+                catch(OperationCanceledException)
+                {
+                    // This is expected: CTRL+C triggers this exception.
+                }
             }
         }
 
-        private CloudQueue OpenQueue(string queueName)
+        private static IHostBuilder UseConfigurationSection(IHostBuilder hostBuilder, IConfiguration configuration)
         {
-            // Retrieve storage account information from connection string.
-            CloudStorageAccount storageAccount = CreateStorageAccountFromConnectionString(StorageConnectionString);
+            foreach (var setting in configuration.AsEnumerable(true))
+            {
 
-            // Create a queue client for interacting with the queue service
-            CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+//                hostBuilder.UseSetting(setting.Key, setting.Value);
+            }
 
-            Console.WriteLine("Open queue");
-
-            CloudQueue queue = queueClient.GetQueueReference(queueName);
-            return queue;
+            return hostBuilder;
         }
+
     }
 }
