@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -7,6 +7,7 @@
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    <UserSecretsId>7e51d11f-403f-4705-98e2-fce7e6e02754</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,16 +22,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\public\images\favicon.ico" />
-    <None Remove="ClientApp\public\images\govuk-apple-touch-icon-152x152.png" />
-    <None Remove="ClientApp\public\images\govuk-apple-touch-icon-167x167.png" />
-    <None Remove="ClientApp\public\images\govuk-apple-touch-icon-180x180.png" />
-    <None Remove="ClientApp\public\images\govuk-apple-touch-icon.png" />
-    <None Remove="ClientApp\public\images\govuk-mask-icon.svg" />
-    <None Remove="ClientApp\public\images\separator-2x.png" />
-    <None Remove="ClientApp\public\images\separator.png" />
-    <None Remove="ClientApp\public\stylesheets\gov-ie8.css" />
-    <None Remove="ClientApp\public\stylesheets\gov.css" />
+    <None Remove="ClientApp\public\assets\fonts\dfe_icons.woff" />
+    <None Remove="ClientApp\public\assets\fonts\FTN35__W.woff" />
+    <None Remove="ClientApp\public\assets\fonts\FTN45__W.woff" />
+    <None Remove="ClientApp\public\assets\images\favicon.ico" />
+    <None Remove="ClientApp\public\assets\images\govuk-apple-touch-icon-152x152.png" />
+    <None Remove="ClientApp\public\assets\images\govuk-apple-touch-icon-167x167.png" />
+    <None Remove="ClientApp\public\assets\images\govuk-apple-touch-icon-180x180.png" />
+    <None Remove="ClientApp\public\assets\images\govuk-apple-touch-icon.png" />
+    <None Remove="ClientApp\public\assets\images\govuk-mask-icon.svg" />
+    <None Remove="ClientApp\public\assets\images\separator-2x.png" />
+    <None Remove="ClientApp\public\assets\images\separator.png" />
+    <None Remove="ClientApp\public\stylesheets\application-ie8.css" />
+    <None Remove="ClientApp\public\stylesheets\application.css" />
+    <None Remove="ClientApp\public\stylesheets\docs-ie8.css" />
+    <None Remove="ClientApp\public\stylesheets\docs.css" />
+    <None Remove="ClientApp\public\stylesheets\unbranded.css" />
     <None Remove="ClientApp\src\App.js" />
     <None Remove="ClientApp\src\App.test.js" />
     <None Remove="ClientApp\src\components\Layout.js" />
@@ -38,34 +45,52 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ClientApp\public\images\favicon.ico">
+    <Content Include="ClientApp\public\assets\fonts\dfe_icons.woff">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ClientApp\public\images\govuk-apple-touch-icon-152x152.png">
+    <Content Include="ClientApp\public\assets\fonts\FTN35__W.woff">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ClientApp\public\images\govuk-apple-touch-icon-167x167.png">
+    <Content Include="ClientApp\public\assets\fonts\FTN45__W.woff">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ClientApp\public\images\govuk-apple-touch-icon-180x180.png">
+    <Content Include="ClientApp\public\assets\images\favicon.ico">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ClientApp\public\images\govuk-apple-touch-icon.png">
+    <Content Include="ClientApp\public\assets\images\govuk-apple-touch-icon-152x152.png">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ClientApp\public\images\govuk-mask-icon.svg">
+    <Content Include="ClientApp\public\assets\images\govuk-apple-touch-icon-167x167.png">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ClientApp\public\images\separator-2x.png">
+    <Content Include="ClientApp\public\assets\images\govuk-apple-touch-icon-180x180.png">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ClientApp\public\images\separator.png">
+    <Content Include="ClientApp\public\assets\images\govuk-apple-touch-icon.png">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ClientApp\public\stylesheets\gov-ie8.css">
+    <Content Include="ClientApp\public\assets\images\govuk-mask-icon.svg">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="ClientApp\public\stylesheets\gov.css">
+    <Content Include="ClientApp\public\assets\images\separator-2x.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ClientApp\public\assets\images\separator.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ClientApp\public\stylesheets\application-ie8.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ClientApp\public\stylesheets\application.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ClientApp\public\stylesheets\docs-ie8.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ClientApp\public\stylesheets\docs.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ClientApp\public\stylesheets\unbranded.css">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
@@ -75,6 +100,10 @@
     <TypeScriptCompile Include="ClientApp\src\App.test.js" />
     <TypeScriptCompile Include="ClientApp\src\App.js" />
     <TypeScriptCompile Include="ClientApp\src\components\signin.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\public\lib\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

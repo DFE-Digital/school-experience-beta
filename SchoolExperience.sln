@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceNotificatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceEvents", "src\SchoolExperienceEvents\SchoolExperienceEvents.csproj", "{93360AB0-D849-43FC-B3FE-B0B7B90BB44C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolExperienceSchoolUi", "src\SchoolExperienceSchoolUi\SchoolExperienceSchoolUi.csproj", "{3D4C42F3-CBA5-4E88-8F35-0331266E5137}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceSchoolUi", "src\SchoolExperienceSchoolUi\SchoolExperienceSchoolUi.csproj", "{3D4C42F3-CBA5-4E88-8F35-0331266E5137}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

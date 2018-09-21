@@ -9,20 +9,23 @@
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <link rel="stylesheet" href="%PUBLIC_URL%/stylesheets/gov.css" asp-append-version="true" />
+    
+    <!--[if lte IE 8]><link href="%PUBLIC_URL%/stylesheets/application-ie8.css" rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if gt IE 8]><!--><link href="%PUBLIC_URL%/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" /><!--<![endif]-->
+    <!--[if lte IE 8]><link href="%PUBLIC_URL%/stylesheets/docs-ie8.css" rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if gt IE 8]><!--><link href="%PUBLIC_URL%/stylesheets/docs.css" media="screen" rel="stylesheet" type="text/css" /><!--<![endif]-->
 
     <!--[if lt IE 9]>
         <script src="~/html5-shiv/html5shiv.js"></script>
         <link rel="stylesheet" href="%PUBLIC_URL%/stylesheets/gov-ie8.css" asp-append-version="true" />
     <![endif]-->
 
-    <link rel="shortcut icon" href="%PUBLIC_URL%/images/favicon.ico" type="image/x-icon" asp-append-version="true" />
-    <link rel="mask-icon" href="%PUBLIC_URL%/images/govuk-mask-icon.svg" color="#0b0c0c" asp-append-version="true" />
-    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/images/govuk-apple-touch-icon-180x180.png" asp-append-version="true" />
-    <link rel="apple-touch-icon" sizes="167x167" href="%PUBLIC_URL%/images/govuk-apple-touch-icon-167x167.png" asp-append-version="true" />
-    <link rel="apple-touch-icon" sizes="152x152" href="%PUBLIC_URL%/images/govuk-apple-touch-icon-152x152.png" asp-append-version="true" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/images/govuk-apple-touch-icon.png" asp-append-version="true" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/assets/images/favicon.ico" type="image/x-icon" asp-append-version="true" />
+    <link rel="mask-icon" href="%PUBLIC_URL%/assets/images/govuk-mask-icon.svg" color="#0b0c0c" asp-append-version="true" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/assets/images/govuk-apple-touch-icon-180x180.png" asp-append-version="true" />
+    <link rel="apple-touch-icon" sizes="167x167" href="%PUBLIC_URL%/assets/images/govuk-apple-touch-icon-167x167.png" asp-append-version="true" />
+    <link rel="apple-touch-icon" sizes="152x152" href="%PUBLIC_URL%/assets/images/govuk-apple-touch-icon-152x152.png" asp-append-version="true" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/assets/images/govuk-apple-touch-icon.png" asp-append-version="true" />
 
     <meta name="theme-color" content="#0b0c0c" />
     <meta property="og:image" content="https://design-system.service.gov.uk/assets/images/govuk-opengraph-image.png" />
@@ -91,8 +94,10 @@
                 </span>
             </p>
         </div>
-
-        <div id="root"></div>
+        
+        <div id="main-content">
+            <div id="root"></div>
+        </div>
 
     </div>
 
@@ -119,7 +124,5 @@
 
     <div id="global-app-error" class="app-error hidden"></div>
 
-    <script src="%PUBLIC_URL%/lib/jquery/dist/jquery.js"></script>
-    <script src="%PUBLIC_URL%/javascripts/application.js" asp-append-version="true"></script>
 </body>
 </html>
