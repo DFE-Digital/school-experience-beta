@@ -3,11 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-SchoolExperienceSchoolUi-45188874-059F-4025-A742-FE6E23C7345C</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/55674ca0-fb0d-42ce-8728-155f3a05f28b/resourcegroups/SchoolExperienceBeta/providers/microsoft.insights/components/schoolexperiencebetaschool</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/55674ca0-fb0d-42ce-8728-155f3a05f28b/resourcegroups/SchoolExperienceBeta/providers/microsoft.insights/components/schoolexperiencebetaschool</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" PrivateAssets="All" />
   </ItemGroup>
 
@@ -16,10 +23,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Shared\_Layout.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    <ProjectReference Include="..\SchoolExperienceApiDto\SchoolExperienceApiDto.csproj" />
+    <ProjectReference Include="..\SchoolExperienceUiShared\SchoolExperienceUiShared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Pages\Shared\_CookieConsentPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Pages\Shared\_Layout.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\Shared\_ValidationScriptsPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

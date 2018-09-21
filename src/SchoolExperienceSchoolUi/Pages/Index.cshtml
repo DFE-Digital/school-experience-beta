@@ -1,0 +1,151 @@
+﻿@page
+@model SchoolExperienceSchoolUi.Pages.DashboardModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@section afterHeader
+    {
+    <vc:sign-in-details></vc:sign-in-details>
+}
+
+<div class="govuk-grid-row dashboard-figures">
+
+
+    <div class="govuk-grid-column-one-half">
+
+
+        <h1 class="govuk-heading-m">Your placements</h1>
+        <div class="top-data-elements">
+            <p class="govuk-!-font-size-24 key-measure">
+                <em class="govuk-!-font-size-48 keyfigure">@Model.TotalAdvertised</em><br />
+                Advertised
+            </p>
+        </div>
+        <div class="top-data-elements">
+            <p class="govuk-!-font-size-24 key-measure">
+                <em class="govuk-!-font-size-48 keyfigure">@Model.TotalBooked</em><br />
+                Booked
+            </p>
+        </div>
+        <div class="top-data-elements">
+
+            <p class="govuk-!-font-size-24 key-measure">
+                <em class="govuk-!-font-size-48 keyfigure">@Model.TotalAvailable</em><br />
+                Available
+            </p>
+        </div>
+
+        @if (Model.SubjectPlacements.Any())
+        {
+
+            <table class="govuk-table">
+                <caption class="govuk-table__caption">Available placements</caption>
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th class="govuk-table__header" scope="col">Subject</th>
+                        <th class="govuk-table__header govuk-table__header--numeric" scope="col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                    @foreach (var subject in Model.SubjectPlacements)
+                    {
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="row">@subject.Name</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@subject.Count</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        @if (Model.SchoolPlacements.Any())
+        {
+            <table class="govuk-table">
+                <caption class="govuk-table__caption">Available placements by school</caption>
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th class="govuk-table__header" scope="col">Name</th>
+                        <th class="govuk-table__header govuk-table__header--numeric" scope="col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                    @foreach (var school in Model.SchoolPlacements)
+                    {
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="row">@school.Name</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@school.Count</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
+
+    </div>
+
+
+
+    <div class="govuk-grid-column-one-half">
+
+        <div class="dashboard-top-divider">
+            &nbsp;
+        </div>
+
+        <div class="greyblock1">
+
+            <h2 class="govuk-heading-m">Your associations</h2>
+            <ul class="govuk-list">
+                <li><a class="govuk-link" href="/booking/associate?id=2">View associations</a></li>
+                <li><a class="govuk-link" href="/booking/add-subsidiary?id=2">Add subsidiary schools</a></li>
+                <li><a class="govuk-link" href="/booking/remove-subsidiary?id=2">Remove subsidiary schools</a></li>
+            </ul>
+
+        </div>
+        <div class="greyblock2">
+
+            <h2 class="govuk-heading-m">Your placements</h2>
+            <ul class="govuk-list">
+                <li><a class="govuk-link" href="/booking/view-calender?id=4">View calendar</a></li>
+                <li><a class="govuk-link" href="/booking/non-placements?id=4">Add non-placement days</a></li>
+
+
+                <li><a class="govuk-link" href="/booking/current-placments?id=4">View live placements</a></li>
+                <li><a class="govuk-link" href="/booking/manage-placements?id=4">Manage placements</a></li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="greyblock1">
+
+            <h2 class="govuk-heading-m">Your profiles</h2>
+            <ul class="govuk-list">
+                <li><a class="govuk-link" href="/booking/profile?id=3">View profiles</a></li>
+                <li><a class="govuk-link" href="/booking/image-management?id=3">Image management</a></li>
+                <li><a class="govuk-link" href="/booking/add-content?id=3">Add content</a></li>
+                <li><a class="govuk-link" href="/booking/remove-content?id=3">Remove content</a></li>
+            </ul>
+
+        </div>
+
+        <div class="greyblock2">
+
+            <h2 class="govuk-heading-m">Your bookings</h2>
+            <ul class="govuk-list">
+                <li><a class="govuk-link" href="/booking/view-bookings?id=5">View bookings</a></li>
+                <li><a class="govuk-link" href="/booking/view-messages?id=5">View messages</a></li>
+                <li><a class="govuk-link" href="/booking/notification?id=5">Notifications</a></li>
+                <li><a class="govuk-link" href="/booking/attenedance?id=5">Candidate attendance</a></li>
+            </ul>
+
+        </div>
+
+
+
+    </div>
+
+</div>
+

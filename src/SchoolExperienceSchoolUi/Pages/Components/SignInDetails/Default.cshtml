@@ -1,0 +1,13 @@
+﻿@model SchoolExperienceSchoolUi.Pages.Components.SignInDetails.ViewModel
+
+<div class="signin-status">
+    <div class="banner">
+        <div class="dfe-name">
+            <p class="govuk-!-font-size-19">Department for Education</p>
+        </div>
+
+        <div class="signin-status">
+            <p class="govuk-!-font-size-16">@Model.Name, you last signed in @Model.LastSignIn.ToString("H:mm, dd, MMM yyyy")</p>
+        </div>
+    </div>
+</div>

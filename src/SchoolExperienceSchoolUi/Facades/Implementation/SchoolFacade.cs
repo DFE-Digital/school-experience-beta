@@ -6,7 +6,7 @@ using SchoolExperienceApiDto.School;
 using SchoolExperienceBaseTypes;
 using SchoolExperienceUiShared.Facades.Implementation;
 
-namespace SchoolExperienceUi.Facades.Implementation
+namespace SchoolExperienceSchoolUi.Facades.Implementation
 {
     internal class SchoolFacade : FacadeBase, ISchoolFacade
     {
@@ -49,6 +49,11 @@ namespace SchoolExperienceUi.Facades.Implementation
         public async Task<GetDiaryEntriesResponse> GetDiaryEntriesAsync(string userId, string schoolId, DateTime start, DateTime end)
         {
             return await GetStringAsync<GetDiaryEntriesResponse>($"{BaseUrl}getdiaryentries?userId={userId}&schoolId={schoolId}&start={start:o}&end={end:o}");
+        }
+
+        public async Task<GetPlacementTotalsResponse> GetPlacementTotals()
+        {
+            return await GetStringAsync<GetPlacementTotalsResponse>($"{BaseUrl}getplacementtotals");
         }
     }
 }

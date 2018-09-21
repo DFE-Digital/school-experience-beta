@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SchoolExperienceApiDto.Candidate;
 using SchoolExperienceBaseTypes;
+using SchoolExperienceUiShared.Facades;
 
 namespace SchoolExperienceUi.Facades
 {

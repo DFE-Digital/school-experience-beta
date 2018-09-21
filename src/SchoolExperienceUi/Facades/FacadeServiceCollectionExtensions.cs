@@ -4,7 +4,7 @@ using SchoolExperienceUi.Facades.Implementation;
 
 namespace SchoolExperienceUi.DependencyInjection
 {
-    public static class FacadeServiceCollection
+    public static class FacadeServiceCollectionExtensions
     {
         public static IServiceCollection AddFacades(this IServiceCollection serviceProvider)
         {

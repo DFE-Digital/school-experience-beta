@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using SchoolExperienceApiDto.Candidate;
 using SchoolExperienceBaseTypes;
+using SchoolExperienceUiShared.Facades.Implementation;
 
 namespace SchoolExperienceUi.Facades.Implementation
 {

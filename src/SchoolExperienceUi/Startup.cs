@@ -12,6 +12,7 @@ using SchoolExperience.DependencyInjection;
 using SchoolExperienceData;
 using SchoolExperienceUi.DependencyInjection;
 using SchoolExperienceUi.Facades.Implementation;
+using SchoolExperienceUiShared.Facades.Implementation;
 
 namespace SchoolExperienceUi
 {
@@ -40,10 +41,9 @@ namespace SchoolExperienceUi
 
             services.AddAutoMapper();
 
-            var baseAddress = Configuration.GetValue<Uri>("ApiBaseAddress");
-
             services.AddHttpClient(FacadeBase.HttpClientName, client =>
             {
+                var baseAddress = Configuration.GetValue<Uri>("ApiBaseAddress");
                 client.BaseAddress = baseAddress;
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
             });

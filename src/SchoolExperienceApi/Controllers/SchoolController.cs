@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SchoolExperienceApiDto.School;
@@ -35,6 +36,34 @@ namespace SchoolExperienceApi.Controllers
 
             return Ok(result);
         }
+
+
+        [HttpGet]
+        [Route("GetPlacementTotals")]
+        public async Task<IActionResult> GetPlacementTotals()
+        {
+            var result = new GetPlacementTotalsResponse
+            {
+                TotalAdvertised = 12,
+                TotalAvailable = 10,
+                TotalBooked = 99,
+                SubjectPlacements = new List<GetPlacementTotalsResponse.SubjectPlacement>
+                {
+                    new GetPlacementTotalsResponse.SubjectPlacement { Name = "English", Count = 10 },
+                    new GetPlacementTotalsResponse.SubjectPlacement { Name = "French", Count = 25 },
+                    new GetPlacementTotalsResponse.SubjectPlacement { Name = "Chemistry", Count = 37 },
+                },
+                SchoolPlacements = new List<GetPlacementTotalsResponse.SchoolPlacement>
+                {
+                    new GetPlacementTotalsResponse.SchoolPlacement { Name = "Hogwarts", Count = 25 },
+                    new GetPlacementTotalsResponse.SchoolPlacement { Name = "St Trinian's", Count = 17 },
+                    new GetPlacementTotalsResponse.SchoolPlacement { Name = "Grange Hill", Count = 42 },
+                }
+            };
+
+            return Ok(result);
+        }
+
 
         [HttpPost]
         [Route("BookCandidate")]

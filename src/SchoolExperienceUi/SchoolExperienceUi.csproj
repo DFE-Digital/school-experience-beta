@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SchoolExperienceApiDto\SchoolExperienceApiDto.csproj" />
     <ProjectReference Include="..\SchoolExperienceData\SchoolExperienceData.csproj" />
+    <ProjectReference Include="..\SchoolExperienceUiShared\SchoolExperienceUiShared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

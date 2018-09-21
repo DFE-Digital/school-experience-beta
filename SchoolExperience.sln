@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceEvents", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolExperienceSchoolUi", "src\SchoolExperienceSchoolUi\SchoolExperienceSchoolUi.csproj", "{5EA75C11-4DEB-4F60-A6E3-4FA0CE75D016}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolExperienceUiShared", "src\SchoolExperienceUiShared\SchoolExperienceUiShared.csproj", "{A2BBDA16-3E52-476E-BDE1-9BEBE4926F10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{5EA75C11-4DEB-4F60-A6E3-4FA0CE75D016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EA75C11-4DEB-4F60-A6E3-4FA0CE75D016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EA75C11-4DEB-4F60-A6E3-4FA0CE75D016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2BBDA16-3E52-476E-BDE1-9BEBE4926F10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2BBDA16-3E52-476E-BDE1-9BEBE4926F10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2BBDA16-3E52-476E-BDE1-9BEBE4926F10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2BBDA16-3E52-476E-BDE1-9BEBE4926F10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +115,7 @@ Global
 		{19E001AC-BFED-4A85-937F-F0E16A5EA787} = {5D3E3501-4ADF-4BA6-AFFB-A41B59C67977}
 		{93360AB0-D849-43FC-B3FE-B0B7B90BB44C} = {5D3E3501-4ADF-4BA6-AFFB-A41B59C67977}
 		{5EA75C11-4DEB-4F60-A6E3-4FA0CE75D016} = {5D3E3501-4ADF-4BA6-AFFB-A41B59C67977}
+		{A2BBDA16-3E52-476E-BDE1-9BEBE4926F10} = {5D3E3501-4ADF-4BA6-AFFB-A41B59C67977}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C81581AA-60CD-4E9E-8010-6017C8361747}

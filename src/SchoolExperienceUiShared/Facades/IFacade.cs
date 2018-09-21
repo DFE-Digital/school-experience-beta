@@ -1,4 +1,4 @@
-﻿namespace SchoolExperienceUi.Facades
+﻿namespace SchoolExperienceUiShared.Facades
 {
     public interface IFacade
     {
