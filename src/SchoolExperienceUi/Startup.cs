@@ -55,7 +55,6 @@ namespace SchoolExperienceUi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -67,7 +66,7 @@ namespace SchoolExperienceUi
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseAuthentication();
+//            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

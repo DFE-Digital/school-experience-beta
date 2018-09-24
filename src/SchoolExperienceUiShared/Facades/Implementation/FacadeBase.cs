@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -22,11 +23,18 @@ namespace SchoolExperienceUiShared.Facades.Implementation
         {
             var httpClient = _httpClientFactory.CreateClient(HttpClientName);
 
-            var response = await httpClient.GetStringAsync(relativeUri);
+            try
+            {
+                var response = await httpClient.GetStringAsync(relativeUri);
+                _logger.LogDebug($"GetStringAsyncResponse:{response}");
 
-            _logger.LogDebug($"GetStringAsyncResponse:{response}");
-
-            return JsonConvert.DeserializeObject<TOut>(response);
+                return JsonConvert.DeserializeObject<TOut>(response);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, $"Can't do: {relativeUri}");
+                throw;
+            }
         }
 
         class EmptyPost
