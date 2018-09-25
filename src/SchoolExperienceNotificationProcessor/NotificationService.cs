@@ -39,23 +39,27 @@ namespace SchoolExperienceNotificationProcessor
         /// </summary>
         private readonly IDictionary<string, NotificationQueueReader> _readers = new Dictionary<string, NotificationQueueReader>();
 
+
+        private readonly INotifyService _notifyService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationService"/> class.
         /// </summary>
         /// <param name="loggerFactory">The logger factory.</param>
         /// <param name="options">The options.</param>
         /// <param name="policyRegistry">The policy registry.</param>
-        public NotificationService(ILoggerFactory loggerFactory, IOptions<NotificationServiceOptions> options, IPolicyRegistry<string> policyRegistry)
+        public NotificationService(ILoggerFactory loggerFactory, IOptions<NotificationServiceOptions> options, IPolicyRegistry<string> policyRegistry, INotifyService notifyService)
         {
             _logger = loggerFactory.CreateLogger(GetType());
             _loggerFactory = loggerFactory;
             _options = options.Value;
             _policyRegistry = policyRegistry;
+            _notifyService = notifyService; 
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            _readers.Add(QueueNames.Notification, new NotificationQueueReader(_options.QueueConnectionString, QueueNames.Notification, _policyRegistry, PolicyRegistryKey, _loggerFactory, cancellationToken));
+            _readers.Add(QueueNames.Notification, new NotificationQueueReader(_options.QueueConnectionString, QueueNames.Notification, _policyRegistry, PolicyRegistryKey, _loggerFactory, cancellationToken, _notifyService));
 
             while (!cancellationToken.IsCancellationRequested)
             {

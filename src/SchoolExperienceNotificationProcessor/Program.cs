@@ -8,10 +8,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
+using Notify.Client;
 using Polly;
 using Polly.Caching;
 using Polly.Registry;
+using SchoolExperience.DependencyInjection;
 using SchoolExperienceEvents.Implementation;
+using SchoolExperienceNotificationProcessor.Implementations;
 
 namespace SchoolExperienceNotificationProcessor
 {
@@ -22,15 +25,19 @@ namespace SchoolExperienceNotificationProcessor
             var host = new HostBuilder()
                 .ConfigureAppConfiguration((hostContext, configApp) =>
                 {
+                    configApp.AddEnvironmentVariables();
+                    configApp.AddEnvironmentVariables(prefix: "ASPNETCORE_");
                     configApp.SetBasePath(Directory.GetCurrentDirectory());
                     configApp.AddJsonFile("appsettings.json", optional: false);
-                    configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true);
-                    configApp.AddEnvironmentVariables();
+                    //configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true);
+                    configApp.AddJsonFile($"appsettings.Development.json", optional: true);
                     configApp.AddCommandLine(args);
                     configApp.AddUserSecrets<NotificationServiceOptions>();
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
+                    var configuration = hostContext.Configuration;
+
                     services.AddSingleton<Polly.Caching.ISyncCacheProvider<CloudQueue>, DictionaryCacheProvider<CloudQueue>>();
                     services.AddSingleton<Polly.Registry.IPolicyRegistry<string>, Polly.Registry.PolicyRegistry>((serviceProvider) =>
                     {
@@ -43,11 +50,17 @@ namespace SchoolExperienceNotificationProcessor
                         .Handle<Exception>()
                         .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
+                    services.AddDatabase(configuration);
+
+                    var key = configuration.GetValue<string>("NotifyApiKey");
+
+                    services.AddScoped<NotificationClient>(sp => new NotificationClient(configuration.GetValue<string>("NotifyApiKey")));
+                    services.AddScoped<INotifyService, NotifyService>();
 
                     services.AddLogging();
                     services.AddHostedService<NotificationService>();
 
-                    services.Configure<NotificationServiceOptions>(hostContext.Configuration.GetSection(nameof(NotificationServiceOptions)));
+                    services.Configure<NotificationServiceOptions>(configuration.GetSection(nameof(NotificationServiceOptions)));
                 })
                 .ConfigureLogging((hostContext, configLogging) =>
                 {

@@ -7,5 +7,6 @@ namespace SchoolExperienceNotificationProcessor
     public class NotificationServiceOptions
     {
         public string QueueConnectionString { get; set; }
+        public string NotifyApiKey { get; set; }
     }
 }

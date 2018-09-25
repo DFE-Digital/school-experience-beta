@@ -6,7 +6,7 @@ add-migration <MigrationName> -project SchoolExperienceData -startup SchoolExper
 UPDATE DATABASE
 ---------------
 
-Make sure Src\SchoolExperienceApi is the 'Default project'
+Make sure Src\SchoolExperienceApi is the startup project.
 
 Update local database:
    $> update-database
