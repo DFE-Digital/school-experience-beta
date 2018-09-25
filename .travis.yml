@@ -1,0 +1,10 @@
+language: csharp
+solution: SchoolExperience.sln
+dotnet: 2.1.0
+before_install:
+  - sudo apt-get install nunit-console
+before_script:
+  - nuget restore SchoolExperience.sln
+after_script:
+  - dotnet test
+  

@@ -37,14 +37,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceUiShared", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{544F6DF7-BD5E-4E8B-B9F0-5922F00DA2FD}"
 	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		after.SchoolExperience.sln.targets = after.SchoolExperience.sln.targets
+		Directory.Build.targets = Directory.Build.targets
 		nuget.config = nuget.config
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceHelpers", "src\SchoolExperienceHelpers\SchoolExperienceHelpers.csproj", "{A9B7BE6F-86A5-4924-B5DC-47048C981A25}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceHelpersTests", "tests\SchoolExperienceHelpersTests\SchoolExperienceHelpersTests.csproj", "{D8204292-00B7-45C3-8A24-C25932241C0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolExperienceAdminUi", "src\SchoolExperienceAdminUi\SchoolExperienceAdminUi.csproj", "{F8A6A2EB-8480-45EB-BD03-3D9F0FFD9FBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceAdminUi", "src\SchoolExperienceAdminUi\SchoolExperienceAdminUi.csproj", "{F8A6A2EB-8480-45EB-BD03-3D9F0FFD9FBB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portals", "Portals", "{B279AECC-D430-412D-AE74-77089977D692}"
 EndProject
