@@ -13,11 +13,9 @@
     <!--[if lte IE 8]>
         <link href="~/assets/stylesheets/application-ie8.css" rel="stylesheet" type="text/css" />
     <![endif]-->
-
     <!--[if gt IE 8]><!-->
     <link href="~/assets/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
     <!--<![endif]-->
-    
     <!--[if lt IE 9]>
         <script src="~/html5-shiv/html5shiv.js"></script>
     <![endif]-->
@@ -80,12 +78,13 @@
                 </a>
             </div>
             <div class="govuk-header__content">
-                <a asp-page="/Index" class="govuk-header__link govuk-header__link--service-name">School Experience Service</a>
+                <a asp-page="/Index" class="govuk-header__link govuk-header__link--service-name">School Experience Service - School</a>
                 <a asp-page="/SignOut" class="signout">Sign out</a>
-
-                @RenderSection("insideHeader", required: false)
             </div>
-</header>
+
+            @RenderSection("insideHeader", required: false)
+        </div>
+    </header>
 
     @RenderSection("afterHeader", required: false)
 

@@ -1,0 +1,142 @@
+﻿@page
+@model SchoolExperienceAdminUi.Pages.IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@section head {
+    <link rel="stylesheet" type="text/css" href="~/lib/slick-carousel/slick.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/slick-carousel/slick-theme.css" />
+    <link rel="stylesheet" type="text/css" href="~/lib/metrics-graphics/metricsgraphics.css" />
+}
+
+@section scripts {
+    <script type="text/javascript" src="~/lib/slick-carousel/slick.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="~/lib/metrics-graphics/metricsgraphics.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#kpi-carousel').slick({
+                infinite: true,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 2000
+            });
+
+            MG.data_graphic({
+                title: "Candidate Registrations",
+                data: [
+                    { 'date': new Date('2018-01-01'), 'value': 100 },
+                    { 'date': new Date('2018-02-01'), 'value': 120 },
+                    { 'date': new Date('2018-03-01'), 'value': 140 },
+                    { 'date': new Date('2018-04-01'), 'value': 130 },
+                    { 'date': new Date('2018-05-01'), 'value': 90 },
+                    { 'date': new Date('2018-06-01'), 'value': 27 }
+                ],
+                width: 900,
+                height: 300,
+                left: 100,
+                color: '#8C001A',
+                target: '#kpi1'
+            });
+            MG.data_graphic({
+                title: "School Registrations",
+                data: [
+                    { 'date': new Date('2018-01-01T00:00:00Z'), 'value': 8 },
+                    { 'date': new Date('2018-02-01T00:00:00Z'), 'value': 10 },
+                    { 'date': new Date('2018-03-01T00:00:00Z'), 'value': 7 },
+                    { 'date': new Date('2018-04-01T00:00:00Z'), 'value': 14 },
+                    { 'date': new Date('2018-05-01T00:00:00Z'), 'value': 20 },
+                    { 'date': new Date('2018-06-01T00:00:00Z'), 'value': 13 }
+                ],
+                width: 900,
+                height: 300,
+                left: 100,
+                color: '#998C1A',
+                target: '#kpi2'
+            });
+            MG.data_graphic({
+                title: "Attendances",
+                data: [
+                    { 'date': new Date('2018-01-01T00:00:00Z'), 'value': 80 },
+                    { 'date': new Date('2018-02-01T00:00:00Z'), 'value': 120 },
+                    { 'date': new Date('2018-03-01T00:00:00Z'), 'value': 75 },
+                    { 'date': new Date('2018-04-01T00:00:00Z'), 'value': 99 },
+                    { 'date': new Date('2018-05-01T00:00:00Z'), 'value': 23 },
+                    { 'date': new Date('2018-06-01T00:00:00Z'), 'value': 99 }
+                ],
+                width: 900,
+                height: 300,
+                left: 100,
+                color: '#8C421A',
+                target: '#kpi3'
+            });
+
+            MG.data_graphic({
+                title: "Candidate Registrations",
+                data: [
+                    { 'date': new Date('2018-01-01T00:00:00Z'), 'value': 100 },
+                    { 'date': new Date('2018-02-01T00:00:00Z'), 'value': 120 },
+                    { 'date': new Date('2018-03-01T00:00:00Z'), 'value': 140 },
+                    { 'date': new Date('2018-04-01T00:00:00Z'), 'value': 130 },
+                    { 'date': new Date('2018-05-01T00:00:00Z'), 'value': 90 },
+                    { 'date': new Date('2018-06-01T00:00:00Z'), 'value': 27 }
+                ],
+                width: 300,
+                height: 200,
+                right: 0,
+                target: '#kpi-1'
+            });
+            MG.data_graphic({
+                title: "School Registration",
+                data: [
+                    { 'date': new Date('2018-01-01T00:00:00Z'), 'value': 8 },
+                    { 'date': new Date('2018-02-01T00:00:00Z'), 'value': 10 },
+                    { 'date': new Date('2018-03-01T00:00:00Z'), 'value': 7 },
+                    { 'date': new Date('2018-04-01T00:00:00Z'), 'value': 14 },
+                    { 'date': new Date('2018-05-01T00:00:00Z'), 'value': 20 },
+                    { 'date': new Date('2018-06-01T00:00:00Z'), 'value': 13 }
+                ],
+                width: 300,
+                height: 200,
+                right: 0,
+                target: '#kpi-2'
+            });
+            MG.data_graphic({
+                title: "Attendance",
+                data: [
+                    { 'date': new Date('2018-01-01T00:00:00Z'), 'value': 80 },
+                    { 'date': new Date('2018-02-01T00:00:00Z'), 'value': 120 },
+                    { 'date': new Date('2018-03-01T00:00:00Z'), 'value': 75 },
+                    { 'date': new Date('2018-04-01T00:00:00Z'), 'value': 99 },
+                    { 'date': new Date('2018-05-01T00:00:00Z'), 'value': 23 },
+                    { 'date': new Date('2018-06-01T00:00:00Z'), 'value': 99 }
+                ],
+                width: 300,
+                height: 200,
+                right: 0,
+                target: '#kpi-3'
+            });
+        });
+    </script>
+}
+
+<div id="kpi-carousel">
+    <div id="kpi1"></div>
+    <div id="kpi2"></div>
+    <div id="kpi3"></div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+        <div id="kpi-1"></div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <div id="kpi-2"></div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <div id="kpi-3"></div>
+    </div>
+</div>

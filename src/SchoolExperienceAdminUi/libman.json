@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.3.1",
+      "destination": "wwwroot/lib/jquery/dist/",
+      "files": [
+        "jquery.js",
+        "jquery.min.map",
+        "jquery.min.js"
+      ]
+    },
+    {
+      "library": "jquery-validate@1.17.0",
+      "destination": "wwwroot/lib/jquery-validation/dist/",
+      "files": [
+        "additional-methods.js",
+        "additional-methods.min.js",
+        "jquery.validate.js",
+        "jquery.validate.min.js"
+      ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.10",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/",
+      "files": [
+        "jquery.validate.unobtrusive.js",
+        "jquery.validate.unobtrusive.min.js"
+      ]
+    },
+    {
+      "library": "metrics-graphics@2.15.6",
+      "destination": "wwwroot/lib/metrics-graphics/"
+    },
+    {
+      "library": "slick-carousel@1.9.0",
+      "destination": "wwwroot/lib/slick-carousel/"
+    }
+  ]
+}
