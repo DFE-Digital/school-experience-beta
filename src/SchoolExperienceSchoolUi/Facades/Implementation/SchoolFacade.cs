@@ -10,7 +10,7 @@ namespace SchoolExperienceSchoolUi.Facades.Implementation
 {
     internal class SchoolFacade : FacadeBase, ISchoolFacade
     {
-        private const string BaseUrl = "/api/school/";
+        private const string BaseUrl = "v1/school/";
 
         public SchoolFacade(IHttpClientFactory httpClientFactory, ILoggerFactory loggerFactory)
             : base(httpClientFactory, loggerFactory)

@@ -10,7 +10,7 @@ namespace SchoolExperienceUi.Facades.Implementation
 {
     internal class CandidateFacade : FacadeBase, ICandidateFacade
     {
-        private const string BaseUrl = "/api/candidate/";
+        private const string BaseUrl = "v1/candidate/";
 
         public CandidateFacade(IHttpClientFactory httpClientFactory, ILoggerFactory loggerFactory)
             : base(httpClientFactory, loggerFactory)

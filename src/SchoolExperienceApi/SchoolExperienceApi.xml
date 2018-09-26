@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SchoolExperienceApi</name>
+    </assembly>
+    <members>
+        <member name="M:SchoolExperienceApi.Controllers.V1.SchoolController.#ctor(SchoolExperienceServices.ISchoolService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SchoolExperienceApi.Controllers.V1.SchoolController"/> class.
+            </summary>
+            <param name="schoolService">The school service.</param>
+        </member>
+    </members>
+</doc>

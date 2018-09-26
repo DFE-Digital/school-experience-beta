@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SchoolExperienceApiDto.School;
 using SchoolExperienceBaseTypes;
 using SchoolExperienceServices;
 
-namespace SchoolExperienceApi.Controllers
+namespace SchoolExperienceApi.Controllers.V1
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public  class SchoolController : ControllerBase
+    public class SchoolController : ControllerBase
     {
         private readonly ISchoolService _schoolService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SchoolController"/> class.
+        /// </summary>
+        /// <param name="schoolService">The school service.</param>
         public SchoolController(ISchoolService schoolService)
         {
             _schoolService = schoolService;

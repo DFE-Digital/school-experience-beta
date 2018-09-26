@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolExperienceApiDto.Candidate;
 using SchoolExperienceServices;
 
-namespace SchoolExperienceApi.Controllers
+namespace SchoolExperienceApi.Controllers.V1
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CandidateController : ControllerBase
     {
@@ -29,7 +29,7 @@ namespace SchoolExperienceApi.Controllers
 
         [HttpDelete]
         [Route("DeleteDiaryEntry")]
-        public async Task<IActionResult> DeleteDiaryEntry(string userId, int id)
+        public async Task<IActionResult> DeleteDiaryEntry([FromQuery] string userId, int id)
         {
             var result = await _candidateService.DeleteDiaryEntriesAsync(userId, id);
 
@@ -38,7 +38,7 @@ namespace SchoolExperienceApi.Controllers
 
         [HttpGet]
         [Route("GetDiaryEntries")]
-        public async Task<IActionResult> GetDiaryEntries(string userId, DateTime start, DateTime end)
+        public async Task<IActionResult> GetDiaryEntries([FromQuery] string userId, DateTime start, DateTime end)
         {
             var result = await _candidateService.GetDiaryEventsAsync(userId, start, end);
 

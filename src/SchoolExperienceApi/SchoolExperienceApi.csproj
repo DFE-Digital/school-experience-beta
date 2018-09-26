@@ -10,6 +10,10 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/55674ca0-fb0d-42ce-8728-155f3a05f28b/resourcegroups/SchoolExperienceBeta/providers/microsoft.insights/components/schoolexperiencebetaapi</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\neils\source\repos\TransformUK\SchoolExperience\src\SchoolExperienceApi\SchoolExperienceApi.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
@@ -20,6 +24,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" />
     <PackageReference Include="Polly" Version="6.1.0" />
     <PackageReference Include="Polly.Extensions.Http" Version="2.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

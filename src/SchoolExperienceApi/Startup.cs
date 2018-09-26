@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.IO;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SchoolExperience.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace SchoolExperienceApi
 {
@@ -39,6 +41,14 @@ namespace SchoolExperienceApi
             services.AddEventServices(Configuration);
 
             services.AddAutoMapper();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "School Experience API", Version = "v1" });
+
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "SchoolExperienceApi.xml");
+                c.IncludeXmlComments(filePath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,14 +69,22 @@ namespace SchoolExperienceApi
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-//            app.UseAuthentication();
+            //            app.UseAuthentication();
 
-            app.UseMvc(routes =>
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "School Experience API V1");
             });
+
+            app.UsePathBase("/api/swagger").UseMvcWithDefaultRoute();
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //        name: "default",
+            //        template: "{controller=Home}/{action=Index}/{id?}");
+            //});
         }
     }
 }
