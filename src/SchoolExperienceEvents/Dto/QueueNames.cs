@@ -6,5 +6,6 @@
     public static class QueueNames
     {
         public const string Notification = "notification";
+        public const string Statistics = "statistics";
     }
 }

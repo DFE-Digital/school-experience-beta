@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -39,27 +40,42 @@ namespace SchoolExperienceNotificationProcessor
         /// </summary>
         private readonly IDictionary<string, NotificationQueueReader> _readers = new Dictionary<string, NotificationQueueReader>();
 
-
+        /// <summary>
+        /// The notify service.
+        /// </summary>
         private readonly INotifyService _notifyService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationService"/> class.
+        /// The telemetry client.
+        /// </summary>
+        private readonly TelemetryClient _telemetryClient;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotificationService" /> class.
         /// </summary>
         /// <param name="loggerFactory">The logger factory.</param>
         /// <param name="options">The options.</param>
         /// <param name="policyRegistry">The policy registry.</param>
-        public NotificationService(ILoggerFactory loggerFactory, IOptions<NotificationServiceOptions> options, IPolicyRegistry<string> policyRegistry, INotifyService notifyService)
+        /// <param name="notifyService">The notify service.</param>
+        /// <param name="telemetryClient">The telemetry client.</param>
+        public NotificationService(
+            ILoggerFactory loggerFactory,
+            IOptions<NotificationServiceOptions> options,
+            IPolicyRegistry<string> policyRegistry,
+            INotifyService notifyService,
+            TelemetryClient telemetryClient)
         {
             _logger = loggerFactory.CreateLogger(GetType());
             _loggerFactory = loggerFactory;
             _options = options.Value;
             _policyRegistry = policyRegistry;
-            _notifyService = notifyService; 
+            _notifyService = notifyService;
+            _telemetryClient = telemetryClient;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+        protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            _readers.Add(QueueNames.Notification, new NotificationQueueReader(_options.QueueConnectionString, QueueNames.Notification, _policyRegistry, PolicyRegistryKey, _loggerFactory, cancellationToken, _notifyService));
+            _readers.Add(QueueNames.Notification, new NotificationQueueReader(_options.QueueConnectionString, QueueNames.Notification, _policyRegistry, PolicyRegistryKey, _telemetryClient, _loggerFactory, cancellationToken, _notifyService));
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -67,7 +83,7 @@ namespace SchoolExperienceNotificationProcessor
                 {
                     try
                     {
-                        await reader.Value.ProcessMessages();
+                        reader.Value.ProcessMessagesAsync().ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
@@ -75,6 +91,8 @@ namespace SchoolExperienceNotificationProcessor
                     }
                 }
             }
+
+            return Task.CompletedTask;
         }
     }
 }

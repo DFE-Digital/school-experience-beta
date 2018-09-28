@@ -11,7 +11,6 @@ using Moq.Protected;
 using NUnit.Framework;
 using SchoolExperienceTestHelpers;
 using SchoolExperienceUi.Facades.Implementation;
-using SchoolExperienceApiDto;
 
 namespace SchoolExperienceUiTests
 {
@@ -24,7 +23,7 @@ namespace SchoolExperienceUiTests
             // Arrange
             var expectedResponse = "{\"searchDistance\":{\"metres\":1609.0},\"schools\":[{\"schoolId\":\"1A\",\"name\":\"SchoolName\",\"contactName\":\"ContactName\",\"address\":\"Address\",\"distance\":{\"metres\":1500.0},\"schoolType\":1}]}";
 
-            var requestUri = new Uri("http://localhost:5001/api/school/findschools");
+            var requestUri = new Uri("http://localhost:5001/api/v1/school/findschools");
 
             var responseMessage = new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(expectedResponse) };
 
@@ -35,8 +34,10 @@ namespace SchoolExperienceUiTests
                 .Callback((HttpRequestMessage message, CancellationToken token) => Debug.WriteLine(message.RequestUri))
                 .ReturnsAsync(responseMessage);
 
-            var httpClient = new HttpClient(handler.Object);
-            httpClient.BaseAddress = new Uri("http://localhost:5001");
+            var httpClient = new HttpClient(handler.Object)
+            {
+                BaseAddress = new Uri("http://localhost:5001/api/")
+            };
 
             var httpClientFactory = new Mock<IHttpClientFactory>();
             httpClientFactory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
