@@ -93,7 +93,7 @@ namespace SchoolExperienceStatisticsProcessor
                 .Handle<Exception>()
                 .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
-            //services.AddDatabase(configuration);
+            services.AddDatabase(configuration);
             services.AddLogging();
 
             services.AddApplicationInsights(o =>
@@ -103,11 +103,6 @@ namespace SchoolExperienceStatisticsProcessor
                 o.TelemetryInitializers.Add(new HttpDependenciesParsingTelemetryInitializer());
                 o.TelemetryInitializers.Add(new OperationCorrelationTelemetryInitializer());
             });
-
-            //var key = configuration.GetValue<string>("NotifyApiKey");
-
-            //services.AddScoped<NotificationClient>(sp => new NotificationClient(configuration.GetValue<string>("NotifyApiKey")));
-            //services.AddScoped<INotifyService, NotifyService>();
 
             services.AddHostedService<StatisticsService>();
 

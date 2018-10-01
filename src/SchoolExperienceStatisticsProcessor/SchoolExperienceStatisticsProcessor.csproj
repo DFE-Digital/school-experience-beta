@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SchoolExperienceProcessorShared\SchoolExperienceProcessorShared.csproj" />
+    <ProjectReference Include="..\SchoolExperienceStatisticsData\SchoolExperienceStatisticsData.csproj" />
   </ItemGroup>
 
 </Project>

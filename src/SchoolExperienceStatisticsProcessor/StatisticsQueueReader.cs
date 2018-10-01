@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Polly.Registry;
 using SchoolExperienceEvents.Dto;
 using SchoolExperienceProcessorShared;
+using SchoolExperienceStatisticsProcessor.MessageProcessors;
 
 namespace SchoolExperienceStatisticsProcessor
 {
@@ -18,21 +19,12 @@ namespace SchoolExperienceStatisticsProcessor
             string policyKey, 
             TelemetryClient telemetryClient, 
             ILoggerFactory loggerFactory, 
+            IServiceProvider serviceProvider,
             CancellationToken cancellationToken) 
-            : base(queueName, connectionString, policyRegistry, policyKey, telemetryClient, loggerFactory, cancellationToken)
+            : base(queueName, connectionString, policyRegistry, policyKey, telemetryClient, loggerFactory, serviceProvider, cancellationToken)
         {
-            RegisterEventHandler(EventNames.AddBooking, typeof(AddBookingEvent), m => AddBooking((AddBookingEvent)m));
+            RegisterEventHandler(EventNames.AddBooking, typeof(AddBookingEvent), typeof(AddBookingMessageProcessor));
         }
 
-        Random random = new Random();
-
-        private Task AddBooking(AddBookingEvent m)
-        {
-            if(random.Next(4) == 0)
-            {
-                throw new ArgumentException("Random error");
-            }
-            return Task.CompletedTask;
-        }
     }
 }

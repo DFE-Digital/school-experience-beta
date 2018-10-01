@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.Azure.EventGrid.Models;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
 using Newtonsoft.Json;
@@ -21,6 +22,7 @@ namespace SchoolExperienceProcessorShared
         private readonly IDictionary<string, MessageProcessorInfo> _eventProcessors = new Dictionary<string, MessageProcessorInfo>();
         private readonly ILogger _logger;
         private readonly TelemetryClient _telemetryClient;
+        private readonly IServiceProvider _serviceProvider;
 
         protected EventProcessorBase(
             string queueName,
@@ -29,22 +31,24 @@ namespace SchoolExperienceProcessorShared
             string policyKey,
             TelemetryClient telemetryClient,
             ILoggerFactory loggerFactory,
+            IServiceProvider serviceProvider,
             CancellationToken cancellationToken)
             : base(connectionString, policyRegistry, policyKey, cancellationToken)
         {
             _telemetryClient = telemetryClient;
             _logger = loggerFactory.CreateLogger(GetType());
+            _serviceProvider = serviceProvider;
             QueueName = queueName;
         }
 
         protected string QueueName { get; }
 
-        public void RegisterEventHandler(string eventName, Type payloadType, Func<object, Task> processor)
+        public void RegisterEventHandler(string eventName, Type payloadType, Type messageProcessorType)
         {
             _eventProcessors[eventName] = new MessageProcessorInfo
             {
-                MessageType = payloadType,
-                ProcessAsync = processor,
+                PayloadType = payloadType,
+                MessageProcessorType = messageProcessorType,
             };
         }
 
@@ -91,10 +95,14 @@ namespace SchoolExperienceProcessorShared
                         if (payload.Data is JObject jObject)
                         {
                             _logger.LogInformation($"Message: {payload.Subject}");
-                            var notificationEvent = (INotificationEvent)jObject.ToObject(processor.MessageType);
-                            await processor.ProcessAsync(notificationEvent);
-                            _telemetryClient.TrackEvent(payload.Subject);
-                            await DeleteEvent(QueueName, message);
+                            using (var scope = _serviceProvider.CreateScope())
+                            using (var instance = (IMessageProcessor)scope.ServiceProvider.GetRequiredService(processor.MessageProcessorType))
+                            {
+                                var notificationEvent = (INotificationEvent)jObject.ToObject(processor.PayloadType);
+                                await instance.ProcessAsync(notificationEvent);
+                                _telemetryClient.TrackEvent(payload.Subject);
+                                await DeleteEvent(QueueName, message);
+                            }
                         }
                         else
                         {
@@ -129,8 +137,8 @@ namespace SchoolExperienceProcessorShared
 
         private class MessageProcessorInfo
         {
-            public Type MessageType { get; set; }
-            public Func<INotificationEvent, Task> ProcessAsync { get; set; }
+            public Type PayloadType { get; set; }
+            public Type MessageProcessorType { get; set; }
         }
     }
 }

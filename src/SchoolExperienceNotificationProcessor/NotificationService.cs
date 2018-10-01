@@ -50,6 +50,8 @@ namespace SchoolExperienceNotificationProcessor
         /// </summary>
         private readonly TelemetryClient _telemetryClient;
 
+        private readonly IServiceProvider _serviceProvider;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationService" /> class.
         /// </summary>
@@ -58,12 +60,14 @@ namespace SchoolExperienceNotificationProcessor
         /// <param name="policyRegistry">The policy registry.</param>
         /// <param name="notifyService">The notify service.</param>
         /// <param name="telemetryClient">The telemetry client.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         public NotificationService(
             ILoggerFactory loggerFactory,
             IOptions<NotificationServiceOptions> options,
             IPolicyRegistry<string> policyRegistry,
             INotifyService notifyService,
-            TelemetryClient telemetryClient)
+            TelemetryClient telemetryClient,
+            IServiceProvider serviceProvider)
         {
             _logger = loggerFactory.CreateLogger(GetType());
             _loggerFactory = loggerFactory;
@@ -71,11 +75,21 @@ namespace SchoolExperienceNotificationProcessor
             _policyRegistry = policyRegistry;
             _notifyService = notifyService;
             _telemetryClient = telemetryClient;
+            _serviceProvider = serviceProvider;
         }
 
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            _readers.Add(QueueNames.Notification, new NotificationQueueReader(_options.QueueConnectionString, QueueNames.Notification, _policyRegistry, PolicyRegistryKey, _telemetryClient, _loggerFactory, cancellationToken, _notifyService));
+            _readers.Add(QueueNames.Notification,
+                new NotificationQueueReader(
+                    _options.QueueConnectionString,
+                    QueueNames.Notification,
+                    _policyRegistry,
+                    PolicyRegistryKey,
+                    _telemetryClient,
+                    _loggerFactory,
+                    _serviceProvider,
+                    cancellationToken));
 
             while (!cancellationToken.IsCancellationRequested)
             {

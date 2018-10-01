@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
@@ -44,19 +45,21 @@ namespace SchoolExperienceStatisticsProcessor
         /// </summary>
         private readonly TelemetryClient _telemetryClient;
 
-
         private StatisticsQueueReader _queueReader;
+        IServiceProvider _serviceProvider;
 
         public StatisticsService(
             ILoggerFactory loggerFactory,
             IOptions<StatisticsServiceOptions> options,
             IPolicyRegistry<string> policyRegistry,
+            IServiceProvider serviceProvider,
             TelemetryClient telemetryClient)
         {
             _logger = loggerFactory.CreateLogger(GetType());
             _loggerFactory = loggerFactory;
             _options = options.Value;
             _policyRegistry = policyRegistry;
+            _serviceProvider = serviceProvider;
             _telemetryClient = telemetryClient;
         }
 
@@ -69,6 +72,7 @@ namespace SchoolExperienceStatisticsProcessor
                 PolicyRegistryKey,
                 _telemetryClient,
                 _loggerFactory,
+                _serviceProvider,
                 cancellationToken);
 
             while (!cancellationToken.IsCancellationRequested)

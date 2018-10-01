@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>47aff185-b037-4c3f-9530-fa96ab62342e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,10 +11,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SchoolExperienceBaseTypes\SchoolExperienceBaseTypes.csproj" />
   </ItemGroup>
 
 </Project>

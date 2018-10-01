@@ -2,6 +2,8 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -50,6 +52,14 @@ namespace SchoolExperienceNotificationProcessor
                         .Handle<Exception>()
                         .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
+                    services.AddApplicationInsights(o =>
+                    {
+                        o.InstrumentationKey = configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
+                        o.IncludeDiagnosticSourceActivities.Add("Microsoft.Azure.EventHubs");
+                        o.TelemetryInitializers.Add(new HttpDependenciesParsingTelemetryInitializer());
+                        o.TelemetryInitializers.Add(new OperationCorrelationTelemetryInitializer());
+                    });
+
                     services.AddDatabase(configuration);
 
                     var key = configuration.GetValue<string>("NotifyApiKey");
@@ -58,6 +68,8 @@ namespace SchoolExperienceNotificationProcessor
                     services.AddScoped<INotifyService, NotifyService>();
 
                     services.AddLogging();
+
+                    NotificationQueueReader.AddMessageProcessors(services);
                     services.AddHostedService<NotificationService>();
 
                     services.Configure<NotificationServiceOptions>(configuration.GetSection(nameof(NotificationServiceOptions)));

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SchoolExperienceServices.PerformancePlatform;
+using Newtonsoft.Json;
 
 namespace SchoolExperienceServices.PerformancePlatform.Implementation
 {
@@ -12,10 +13,13 @@ namespace SchoolExperienceServices.PerformancePlatform.Implementation
     {
         public const string HttpClientName = "PerformancePlatform";
 
-        private readonly PerformancePlatformOptions _options;
+        private const string JsonMediaType = "application/json";
+
         private readonly IHttpClientFactory _httpClientFactory;
 
         private readonly ILogger _logger;
+
+        private readonly PerformancePlatformOptions _options;
 
         public PerformancePlatformService(
             IOptions<PerformancePlatformOptions> options,
@@ -32,9 +36,8 @@ namespace SchoolExperienceServices.PerformancePlatform.Implementation
             var httpClient = GetHttpClient();
 
             var relativeUrl = $"/data/{_options.ServiceName}/{name}";
-            var response = await httpClient.PostAsync(relativeUrl, new StringContent("[]"));
+            var response = await httpClient.PostAsync(relativeUrl, new StringContent("[]", Encoding.UTF8, JsonMediaType));
             response.EnsureSuccessStatusCode();
-
         }
 
         public async Task UpdateAsync(string name, IEnumerable<PerformancePlatformMetric> metrics)
@@ -42,7 +45,12 @@ namespace SchoolExperienceServices.PerformancePlatform.Implementation
             var httpClient = GetHttpClient();
 
             var relativeUrl = $"/data/{_options.ServiceName}/{name}";
-            var response = await httpClient.PostAsJsonAsync(relativeUrl, metrics);
+            var jsonData = JsonConvert.SerializeObject(metrics);
+
+            _logger.LogDebug($"PostAsync:{relativeUrl}->{jsonData}");
+
+            var content = new StringContent(jsonData, Encoding.UTF8, JsonMediaType);
+            var response = await httpClient.PostAsync(relativeUrl, content);
             response.EnsureSuccessStatusCode();
         }
 
@@ -50,7 +58,7 @@ namespace SchoolExperienceServices.PerformancePlatform.Implementation
         {
             var httpClient = _httpClientFactory.CreateClient(HttpClientName);
             httpClient.BaseAddress = new Uri(_options.WriteHost);
-            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            httpClient.DefaultRequestHeaders.Add("Accept", JsonMediaType);
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", _options.BearerToken);
 
             return httpClient;
