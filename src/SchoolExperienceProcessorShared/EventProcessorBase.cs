@@ -54,7 +54,7 @@ namespace SchoolExperienceProcessorShared
 
         public async Task ProcessMessagesAsync()
         {
-            var messages = (await GetEvents<EventGridEvent>(QueueName, 10).ConfigureAwait(false)).ToList();
+            var messages = (await GetEvents<EventGridEvent>(QueueName, 1).ConfigureAwait(false)).ToList();
 
             if (messages.Any())
             {

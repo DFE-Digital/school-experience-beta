@@ -1,22 +1,28 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SchoolExperienceEvents.Dto;
-using SchoolExperienceProcessorShared;
+using SchoolExperienceStatisticsData;
 
 namespace SchoolExperienceStatisticsProcessor.MessageProcessors
 {
-    internal sealed class AddBookingMessageProcessor : MessageProcessorBase<AddBookingEvent>
+    internal sealed class AddBookingMessageProcessor : CounterMessageProcessorBase<AddBookingEvent>
     {
-        private static readonly Random Random = new Random();
+        private const string CounterName = "addbooking";
 
-        protected override Task ProcessAsync(AddBookingEvent eventInfo)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddBookingMessageProcessor"/> class.
+        /// </summary>
+        /// <param name="dbContext">The database context.</param>
+        /// <param name="logger">The logger.</param>
+        public AddBookingMessageProcessor(ApplicationDbContext dbContext, ILogger<AddBookingMessageProcessor> logger)
+            : base(dbContext, logger)
         {
-            if (Random.Next(4) == 0)
-            {
-                throw new ArgumentException("Random error");
-            }
+        }
 
-            return Task.CompletedTask;
+        /// <inheritdoc />
+        protected override async Task ProcessAsync(AddBookingEvent eventInfo)
+        {
+            await AddCounter(CounterName);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace SchoolExperienceStatisticsData
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var env = System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            env = "Development";
             Console.WriteLine($"Env: {env}");
 
             var configurationBuilder = new ConfigurationBuilder()

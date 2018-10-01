@@ -104,6 +104,7 @@ namespace SchoolExperienceStatisticsProcessor
                 o.TelemetryInitializers.Add(new OperationCorrelationTelemetryInitializer());
             });
 
+            StatisticsQueueReader.AddMessageProcessors(services);
             services.AddHostedService<StatisticsService>();
 
             services.Configure<StatisticsServiceOptions>(configuration.GetSection(nameof(StatisticsServiceOptions)));

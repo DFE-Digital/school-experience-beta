@@ -77,7 +77,14 @@ namespace SchoolExperienceStatisticsProcessor
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                await _queueReader.ProcessMessagesAsync().ConfigureAwait(false);
+                try
+                {
+                    await _queueReader.ProcessMessagesAsync().ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "ProcessMessagesAsync exception");
+                }
             }
         }
     }

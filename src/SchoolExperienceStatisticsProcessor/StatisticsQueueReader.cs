@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly.Registry;
 using SchoolExperienceEvents.Dto;
@@ -24,6 +25,13 @@ namespace SchoolExperienceStatisticsProcessor
             : base(queueName, connectionString, policyRegistry, policyKey, telemetryClient, loggerFactory, serviceProvider, cancellationToken)
         {
             RegisterEventHandler(EventNames.AddBooking, typeof(AddBookingEvent), typeof(AddBookingMessageProcessor));
+        }
+
+        public static IServiceCollection AddMessageProcessors(IServiceCollection services)
+        {
+            services.AddScoped<AddBookingMessageProcessor>();
+
+            return services;
         }
 
     }
