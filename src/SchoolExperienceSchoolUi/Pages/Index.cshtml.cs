@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SchoolExperienceSchoolUi.Facades;
 
 namespace SchoolExperienceSchoolUi.Pages
 {
+    [Authorize]
     public class DashboardModel : PageModel
     {
         private readonly ISchoolFacade _schoolFacade;

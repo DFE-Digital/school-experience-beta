@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.AzureADB2C.UI;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +34,102 @@ namespace SchoolExperienceSchoolUi
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //services.AddAuthentication(AzureADB2CDefaults.AuthenticationScheme)
+            services.AddAuthentication(options =>
+            {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromHours(6);
+                options.Events = new CookieAuthenticationEvents
+                {
+
+                    // refer to
+                    //  https://github.com/mderriey/TokenRenewal
+                    //  https://stackoverflow.com/questions/40032851/how-to-handle-expired-access-token-in-asp-net-core-using-refresh-token-with-open
+                    // for more details
+
+                    // this event is fired everytime the cookie has been validated by the cookie middleware,
+                    // so basically during every authenticated request
+                    // the decryption of the cookie has already happened so we have access to the user claims
+                    // and cookie properties - expiration, etc..
+                    OnValidatePrincipal = async x =>
+                    {
+                        // since our cookie lifetime is based on the access token one,
+                        // check if we're more than halfway of the cookie lifetime
+                        // assume a timeout of 20 minutes.
+                        var timeElapsed = DateTimeOffset.UtcNow.Subtract(x.Properties.IssuedUtc.Value);
+
+                        if (timeElapsed > TimeSpan.FromMinutes(19.5))
+                        {
+                            var identity = (ClaimsIdentity)x.Principal.Identity;
+                            var accessTokenClaim = identity.FindFirst("access_token");
+                            var refreshTokenClaim = identity.FindFirst("refresh_token");
+
+                            // if we have to refresh, grab the refresh token from the claims, and request
+                            // new access token and refresh token
+                            var refreshToken = refreshTokenClaim.Value;
+
+                            var clientId = Configuration["auth:oidc:clientId"];
+                            const string envKeyClientSecret = "DFE_SIGNIN_CLIENT_SECRET";
+                            var clientSecret = Configuration[envKeyClientSecret];
+                            if (string.IsNullOrWhiteSpace(clientSecret))
+                            {
+                                throw new Exception("Missing environment variable " + envKeyClientSecret + " - get this from the DfE Sign-in team.");
+                            }
+                            var tokenEndpoint = Configuration["auth:oidc:tokenEndpoint"];
+
+                            var client = new TokenClient(tokenEndpoint, clientId, clientSecret);
+                            var response = await client.RequestRefreshTokenAsync(refreshToken, new { client_secret = clientSecret });
+
+                            if (!response.IsError)
+                            {
+                                // everything went right, remove old tokens and add new ones
+                                identity.RemoveClaim(accessTokenClaim);
+                                identity.RemoveClaim(refreshTokenClaim);
+
+                                identity.AddClaims(new[]
+                                {
+                                    new Claim("access_token", response.AccessToken),
+                                        new Claim("refresh_token", response.RefreshToken)
+                                });
+
+                                // indicate to the cookie middleware to renew the session cookie
+                                // the new lifetime will be the same as the old one, so the alignment
+                                // between cookie and access token is preserved
+                                x.ShouldRenew = true;
+                            }
+                            else
+                            {
+                                // could not refresh - log the user out
+                                // _logger.LogWarning("Token refresh failed with message: " + response.ErrorDescription);
+                                x.RejectPrincipal();
+                            }
+                        }
+                    }
+                };
+            })
+            .AddOpenIdConnect(options =>
+            {
+                var config = new DfeSignInOptions();
+                Configuration.GetSection(nameof(DfeSignInOptions)).Bind(config);
+
+                options.Authority = config.Server;
+                options.ClientId = config.ClientId;
+                options.ClientSecret = config.ClientSecret;
+                options.RequireHttpsMetadata = false;
+                options.ResponseType = "id_token";
+                options.CallbackPath = "/account/signedin";
+                options.SignedOutRedirectUri = "/account/signout";
+                options.Scope.Add("openid");
+                options.Scope.Add("email");
+
+
+
+            });
+
             //    .AddAzureADB2C(options => Configuration.Bind("AzureAdB2C", options));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -69,8 +162,7 @@ namespace SchoolExperienceSchoolUi
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
-//            app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
