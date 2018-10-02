@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using AutoMapper;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -10,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using SchoolExperienceSchoolUi.DependencyInjection;
 using SchoolExperienceUiShared.Facades.Implementation;
 
@@ -45,7 +49,6 @@ namespace SchoolExperienceSchoolUi
                 options.ExpireTimeSpan = TimeSpan.FromHours(6);
                 options.Events = new CookieAuthenticationEvents
                 {
-
                     // refer to
                     //  https://github.com/mderriey/TokenRenewal
                     //  https://stackoverflow.com/questions/40032851/how-to-handle-expired-access-token-in-asp-net-core-using-refresh-token-with-open
@@ -117,17 +120,109 @@ namespace SchoolExperienceSchoolUi
                 Configuration.GetSection(nameof(DfeSignInOptions)).Bind(config);
 
                 options.Authority = config.Server;
-                options.ClientId = config.ClientId;
-                options.ClientSecret = config.ClientSecret;
                 options.RequireHttpsMetadata = false;
-                options.ResponseType = "id_token";
-                options.CallbackPath = "/account/signedin";
-                options.SignedOutRedirectUri = "/account/signout";
+                //options.ResponseType = "id_token";
+
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.MetadataAddress = config.MetaDataAddress;
+
+                options.ClientId = config.ClientId;
+                if (string.IsNullOrWhiteSpace(config.ClientSecret))
+                {
+                    throw new Exception($"Missing environment variable {nameof(config.ClientSecret)} - get this from the DfE Sign-in team.");
+                }
+
+                options.ClientSecret = config.ClientSecret;
+                options.ResponseType = OpenIdConnectResponseType.Code;
+                options.GetClaimsFromUserInfoEndpoint = true;
+
+                // using this property would align the expiration of the cookie
+                // with the expiration of the identity token
+                // UseTokenLifetime = true;
+
+                options.Scope.Clear();
                 options.Scope.Add("openid");
                 options.Scope.Add("email");
+                options.Scope.Add("profile");
 
+                options.Scope.Add("offline_access");
 
+                options.SaveTokens = true;
+                options.CallbackPath = new PathString(config.CallbackPath);
+                options.SignedOutCallbackPath = new PathString(config.SignedOutCallbackPath);
+                options.SecurityTokenValidator = new JwtSecurityTokenHandler
+                {
+                    InboundClaimTypeMap = new Dictionary<string, string>(),
+                    TokenLifetimeInMinutes = 20,
+                    SetDefaultTimesOnTokenCreation = true,
+                };
+                options.ProtocolValidator = new OpenIdConnectProtocolValidator
+                {
+                    RequireSub = true,
+                    RequireStateValidation = false,
+                    NonceLifetime = TimeSpan.FromMinutes(15)
+                };
 
+                options.DisableTelemetry = true;
+                options.Events = new OpenIdConnectEvents
+                {
+                    // Sometimes, problems in the OIDC provider (such as session timeouts)
+                    // Redirect the user to the /auth/cb endpoint. ASP.NET Core middleware interprets this by default
+                    // as a successful authentication and throws in surprise when it doesn't find an authorization code.
+                    // This override ensures that these cases redirect to the root.
+                    OnMessageReceived = context =>
+                    {
+                        var isSpuriousAuthCbRequest =
+                            context.Request.Path == options.CallbackPath &&
+                            context.Request.Method == "GET" &&
+                            !context.Request.Query.ContainsKey("code");
+
+                        if (isSpuriousAuthCbRequest)
+                        {
+                            context.HandleResponse();
+                            context.Response.StatusCode = 302;
+                            context.Response.Headers["Location"] = "/";
+                        }
+
+                        return Task.CompletedTask;
+                    },
+
+                    // Sometimes the auth flow fails. The most commonly observed causes for this are
+                    // Cookie correlation failures, caused by obscure load balancing stuff.
+                    // In these cases, rather than send user to a 500 page, prompt them to re-authenticate.
+                    // This is derived from the recommended approach: https://github.com/aspnet/Security/issues/1165
+                    OnRemoteFailure = ctx =>
+                    {
+                        ctx.Response.Redirect("/");
+                        ctx.HandleResponse();
+                        return Task.FromResult(0);
+                    },
+
+                    OnRedirectToIdentityProvider = context =>
+                    {
+                        context.ProtocolMessage.Prompt = "consent";
+                        return Task.CompletedTask;
+                    },
+
+                    // that event is called after the OIDC middleware received the authorisation code,
+                    // redeemed it for an access token and a refresh token,
+                    // and validated the identity token
+                    OnTokenValidated = x =>
+                    {
+                        // store both access and refresh token in the claims - hence in the cookie
+                        var identity = (ClaimsIdentity)x.Principal.Identity;
+                        identity.AddClaims(new[]
+                        {
+                            new Claim("access_token", x.TokenEndpointResponse.AccessToken),
+                            new Claim("refresh_token", x.TokenEndpointResponse.RefreshToken)
+                        });
+
+                        // so that we don't issue a session cookie but one with a fixed expiration
+                        x.Properties.IsPersistent = true;
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             //    .AddAzureADB2C(options => Configuration.Bind("AzureAdB2C", options));
