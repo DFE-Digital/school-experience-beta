@@ -1,4 +1,5 @@
-﻿@model SchoolExperienceSchoolUi.Pages.Components.SignInDetails.ViewModel
+﻿@using IdentityModel.Client
+@model SchoolExperienceSchoolUi.Pages.Components.SignInDetails.ViewModel
 
 <div class="signin-status">
     <div class="banner">
@@ -7,7 +8,16 @@
         </div>
 
         <div class="signin-status">
-            <p class="govuk-!-font-size-16">@Model.Name, you last signed in @Model.LastSignIn.ToString("H:mm, dd, MMM yyyy")</p>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <p class="govuk-!-font-size-16">@Model.Name, you last signed in @Model.LastSignIn.ToString("H:mm, dd, MMM yyyy")</p>
+            }
+            else
+
+            {
+                <p class="govuk-!-font-size-16"><a asp-page="Auth/Login">Sign in</a> </p>
+
+            }
         </div>
     </div>
 </div>

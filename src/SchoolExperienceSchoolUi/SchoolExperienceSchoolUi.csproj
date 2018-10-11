@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
-    <Folder Include="wwwroot\assets\fonts\" />
   </ItemGroup>
 
   <ItemGroup>

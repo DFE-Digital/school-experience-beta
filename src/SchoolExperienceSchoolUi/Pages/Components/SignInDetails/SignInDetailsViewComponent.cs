@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,13 +10,21 @@ namespace SchoolExperienceSchoolUi.Pages.Components.SignInDetails
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var viewModel = new ViewModel()
-            {
-                Name = "Neil Scales",
-                LastSignIn = DateTime.UtcNow.AddMinutes(-37)
-            };
+            var viewModel = new ViewModel();
 
-            return View(viewModel);
+            if (User.Identity.IsAuthenticated)
+            {
+                var identity = (ClaimsIdentity)User.Identity;
+                var name = identity.Claims.FirstOrDefault(x => x.Type == "given_name");
+                viewModel.Name = name.Value;
+                viewModel.LastSignIn = DateTime.UtcNow.AddMinutes(-37);
+            }
+            else
+            {
+                viewModel.Name = "Unknown";
+            }
+
+            return await Task.FromResult(View(viewModel));
         }
     }
 }
