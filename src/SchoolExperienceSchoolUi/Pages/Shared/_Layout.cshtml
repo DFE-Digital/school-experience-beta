@@ -81,11 +81,11 @@
                 <a asp-page="/Index" class="govuk-header__link govuk-header__link--service-name">School Experience Service - School</a>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-page="Auth/Logout" class="signout">Sign out</a>
+                    <a asp-page="/Auth/Logout" class="signout">Sign out</a>
                 }
                 else
                 {
-                    <a asp-page="Auth/Login" class="signin-status">Sign in</a>
+                    <a asp-page="/Auth/Login" class="signin">Sign in</a>
                 }
             </div>
 

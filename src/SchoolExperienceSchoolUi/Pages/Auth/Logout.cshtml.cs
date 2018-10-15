@@ -14,7 +14,6 @@ namespace SchoolExperienceSchoolUi.Pages.Auth
         {
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            Redirect("/Auth/SignedOut");
         }
     }
 }
