@@ -32,89 +32,94 @@ namespace SchoolExperienceServices.Implementation
             start = start.Date;
             end = end.Date;
 
-            var candidate = _dbContext.Candidates.First(x => x.Id == Guid.Parse(userId));
+            var candidate = _dbContext.Candidates.First(x => x.GitisReference == userId);
+            throw new NotImplementedException();
 
-            var existingEntries = await _dbContext.CandidateDiarys
-                .Where(x => x.Candidate == candidate && x.When >= start && x.When <= end)
-                .ToListAsync();
+            //var existingEntries = await _dbContext.CandidateDiarys
+            //    .Where(x => x.Candidate == candidate && x.When >= start && x.When <= end)
+            //    .ToListAsync();
 
-            var newEvents = new List<CandidateDiary>();
+            //var newEvents = new List<CandidateDiary>();
 
-            var currentDay = start;
-            while (currentDay != end)
-            {
-                // Make sure we don't overwrite any existing entries
-                if (existingEntries.FirstOrDefault(x => x.When.Date == currentDay) == null)
-                {
-                    var entity = new CandidateDiary
-                    {
-                        Candidate = candidate,
-                        EntryType = type,
-                        When = currentDay,
-                    };
+            //var currentDay = start;
+            //while (currentDay != end)
+            //{
+            //    // Make sure we don't overwrite any existing entries
+            //    if (existingEntries.FirstOrDefault(x => x.When.Date == currentDay) == null)
+            //    {
+            //        var entity = new CandidateDiary
+            //        {
+            //            Candidate = candidate,
+            //            EntryType = type,
+            //            When = currentDay,
+            //        };
 
-                    newEvents.Add(entity);
-                    _dbContext.CandidateDiarys.Add(entity);
-                }
+            //        newEvents.Add(entity);
+            //        _dbContext.CandidateDiarys.Add(entity);
+            //    }
 
-                currentDay = currentDay.AddDays(1);
-            }
+            //    currentDay = currentDay.AddDays(1);
+            //}
 
-            await _dbContext.SaveChangesAsync();
+            //await _dbContext.SaveChangesAsync();
 
-            return new CreateDiaryEntryResult
-            {
-                Events = newEvents.Select(x=>new CreateDiaryEntryResult.EventItem
-                {
-                    Id = x.Id,
-                    Result = CreateEventResult.Success,
-                    When = x.When,
-                }).ToList(),
-            };
+            //return new CreateDiaryEntryResult
+            //{
+            //    Events = newEvents.Select(x=>new CreateDiaryEntryResult.EventItem
+            //    {
+            //        Id = x.Id,
+            //        Result = CreateEventResult.Success,
+            //        When = x.When,
+            //    }).ToList(),
+            //};
         }
 
         public async Task<DeleteDiaryEntryResult> DeleteDiaryEntriesAsync(string userId, int id)
         {
-            var result = DeleteDiaryEntryResult.DeleteResult.None;
-            var entry = _dbContext.CandidateDiarys.First(x => x.Candidate.Id == Guid.Parse(userId) && x.Id == id);
+            throw new NotImplementedException();
 
-            switch (entry.EntryType)
-            {
-                case DiaryEntryType.Free:
-                    result = DeleteDiaryEntryResult.DeleteResult.Deleted;
-                    _dbContext.CandidateDiarys.Remove(entry);
-                    await _dbContext.SaveChangesAsync();
-                    break;
+            //var result = DeleteDiaryEntryResult.DeleteResult.None;
+            //var entry = _dbContext.CandidateDiarys.First(x => x.Candidate.Id == Guid.Parse(userId) && x.Id == id);
 
-                case DiaryEntryType.Booked:
-                    result = DeleteDiaryEntryResult.DeleteResult.NotAllowed;
-                    break;
-            }
+            //switch (entry.EntryType)
+            //{
+            //    case DiaryEntryType.Free:
+            //        result = DeleteDiaryEntryResult.DeleteResult.Deleted;
+            //        _dbContext.CandidateDiarys.Remove(entry);
+            //        await _dbContext.SaveChangesAsync();
+            //        break;
 
-            return new DeleteDiaryEntryResult
-            {
-                Result = result,
-            };
+            //    case DiaryEntryType.Booked:
+            //        result = DeleteDiaryEntryResult.DeleteResult.NotAllowed;
+            //        break;
+            //}
+
+            //return new DeleteDiaryEntryResult
+            //{
+            //    Result = result,
+            //};
         }
 
         public async Task<GetDiaryEntriesResponse> GetDiaryEventsAsync(string userId, DateTime start, DateTime end)
         {
-            var candidateUserId = Guid.Parse(userId);
-            var events = await _dbContext.CandidateDiarys
-                .Where(x => x.Candidate.Id == candidateUserId && x.When >= start && x.When <= end)
-                .Select(x => new GetDiaryEntriesResponse.DiaryEvent
-                {
-                    EntryType = x.EntryType,
-                    Id = x.Id,
-                    When = x.When,
-                    Title = x.EntryType == DiaryEntryType.Booked ? x.School.Name : null,
-                })
-                .ToListAsync();
+            throw new NotImplementedException();
 
-            return new GetDiaryEntriesResponse
-            {
-                Events = events,
-            };
+            //var candidateUserId = Guid.Parse(userId);
+            //var events = await _dbContext.CandidateDiarys
+            //    .Where(x => x.Candidate.Id == candidateUserId && x.When >= start && x.When <= end)
+            //    .Select(x => new GetDiaryEntriesResponse.DiaryEvent
+            //    {
+            //        EntryType = x.EntryType,
+            //        Id = x.Id,
+            //        When = x.When,
+            //        Title = x.EntryType == DiaryEntryType.Booked ? x.School.Name : null,
+            //    })
+            //    .ToListAsync();
+
+            //return new GetDiaryEntriesResponse
+            //{
+            //    Events = events,
+            //};
         }
     }
 }

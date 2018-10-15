@@ -24,33 +24,35 @@ namespace SchoolExperienceServices.Implementation
 
         public async Task<BookCandidateResponse> CreateBooking(string userId, string schoolId, string candidateId, DateTime when)
         {
-            var candidate = await _dbContext.Candidates.FirstAsync(x => x.Id == Guid.Parse(candidateId));
-            var school = await _dbContext.Schools.FirstAsync(x => x.Id == schoolId);
+            throw new NotImplementedException();
 
-            var entry = new SchoolExperienceData.Entities.SchoolDiary
-            {
-                CandidateDiary = new SchoolExperienceData.Entities.CandidateDiary
-                {
-                    Candidate = candidate,
-                    School = school,
-                    EntryType = DiaryEntryType.Reserved,
-                    When = when,
-                },
-                School = school,
-                When = when,
-            };
+            //var candidate = await _dbContext.Candidates.FirstAsync(x => x.Id == Guid.Parse(candidateId));
+            //var school = await _dbContext.Schools.FirstAsync(x => x.Id == schoolId);
 
-            _dbContext.SchoolDiary.Add(entry);
-            await _dbContext.SaveChangesAsync();
+            //var entry = new SchoolExperienceData.Entities.SchoolDiary
+            //{
+            //    CandidateDiary = new SchoolExperienceData.Entities.CandidateDiary
+            //    {
+            //        Candidate = candidate,
+            //        School = school,
+            //        EntryType = DiaryEntryType.Reserved,
+            //        When = when,
+            //    },
+            //    School = school,
+            //    When = when,
+            //};
 
-            await _eventService.AddBooking(entry.Id.ToString(), when, school.Id, school.Name, candidate.Id.ToString(), candidate.Name, candidate.Subject);
+            //_dbContext.SchoolDiary.Add(entry);
+            //await _dbContext.SaveChangesAsync();
 
-            return new BookCandidateResponse
-            {
-                Status = BookCandidateResponse.ResultStatus.Success,
-                Text = $"{candidate.Name}({candidate.Subject})",
-                Id = entry.Id,
-            };
+            //await _eventService.AddBooking(entry.Id.ToString(), when, school.Id, school.Name, candidate.Id.ToString(), candidate.ZZZName, candidate.DegreeSubject);
+
+            //return new BookCandidateResponse
+            //{
+            //    Status = BookCandidateResponse.ResultStatus.Success,
+            //    Text = $"{candidate.ZZZName}({candidate.DegreeSubject})",
+            //    Id = entry.Id,
+            //};
         }
 
         public async Task<FindSchoolsResponse> FindSchoolsAsync(string postCode, Distance searchDistance)
@@ -105,19 +107,20 @@ namespace SchoolExperienceServices.Implementation
 
         public async Task<GetDiaryEntriesResponse> GetDiaryEventsAsync(string userId, string schoolId, DateTime start, DateTime end)
         {
-            var entries = await _dbContext.SchoolDiary
-                .Where(x => x.School.Id == schoolId && x.When >= start && x.When <= end)
-                .Select(x => new GetDiaryEntriesResponse.DiaryEvent
-                {
-                    Id = x.Id,
-                    When = x.When,
-                    CandidateName = x.CandidateDiary.Candidate.Name,
-                    CandidateSubject = x.CandidateDiary.Candidate.Subject,
-                    EntryType = x.CandidateDiary.EntryType,
-                })
-                .ToListAsync();
+            throw new NotImplementedException();
+            //var entries = await _dbContext.SchoolDiary
+            //    .Where(x => x.School.Id == schoolId && x.When >= start && x.When <= end)
+            //    .Select(x => new GetDiaryEntriesResponse.DiaryEvent
+            //    {
+            //        Id = x.Id,
+            //        When = x.When,
+            //        CandidateName = x.CandidateDiary.Candidate.Name,
+            //        CandidateSubject = x.CandidateDiary.Candidate.DegreeSubject,
+            //        EntryType = x.CandidateDiary.EntryType,
+            //    })
+            //    .ToListAsync();
 
-            return new GetDiaryEntriesResponse { Events = entries };
+            //return new GetDiaryEntriesResponse { Events = entries };
         }
     }
 }

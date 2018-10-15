@@ -63,7 +63,6 @@ namespace SchoolExperienceStatisticsProcessor.MessageProcessors
                 }
             }
 
-            return Task.CompletedTask;
         }
     }
 }

@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SchoolExperienceData.Entities.Candidate">
+    <Position X="2.75" Y="1.25" Width="2.25" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <AssociationLine Name="DegreeSubject" Type="SchoolExperienceData.Entities.Subject">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.11" Y="-0.273" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="GitisData" Type="SchoolExperienceData.Entities.GitisData">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.11" Y="0.06" Height="0.182" Width="0.594" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AgACIAACAAAEAQACAAAAAEAQAAAAAAIEAAAAAIAAAhA=</HashCode>
+      <FileName>Entities\Candidate.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DegreeSubject" />
+      <Property Name="PreferredSubject" />
+      <Property Name="GitisData" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Calendar" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="SchoolExperienceData.Entities.School">
+    <Position X="10.75" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAECAAQAAACAAAAAAAAAIgQAACQAAAAEAAAAAAAEAAA=</HashCode>
+      <FileName>Entities\School.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PlacementSubjects" />
+      <Property Name="Calendar" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="SchoolExperienceData.Entities.Subject" Collapsed="true">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Subject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolExperienceData.Entities.SchoolCalendar">
+    <Position X="13.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Entities\SchoolCalendar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolExperienceData.Entities.CandidateCalendar">
+    <Position X="2.75" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Entities\CandidateCalendar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SchoolExperienceData.Entities.Booking">
+    <Position X="7.25" Y="4.75" Width="1.5" />
+    <AssociationLine Name="Candidate" Type="SchoolExperienceData.Entities.Candidate">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.06" Y="0.079" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="RequestedSubject" Type="SchoolExperienceData.Entities.Subject">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.44" Y="0.089" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAECBAAAAAAAAAAAAAAAAABCEAAQAAAMAAAAAA=</HashCode>
+      <FileName>Entities\Booking.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="School" />
+      <Property Name="Candidate" />
+      <Property Name="RequestedSubject" />
+      <Property Name="Status" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SchoolExperienceData.Entities.SchoolUser">
+    <Position X="13.75" Y="5" Width="1.5" />
+    <AssociationLine Name="Associations" Type="SchoolExperienceData.Entities.School">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.044" Y="0.225" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Entities\SchoolUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Associations" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="SchoolExperienceData.Entities.GitisData">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAQAAAAQAAACAAAAggAAAAA=</HashCode>
+      <FileName>Entities\GitisData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="SchoolExperienceData.Entities.BookingStatus">
+    <Position X="10.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQgAAAAAAAAAAAAAAABAAAAAAAAAgAAEAAAA=</HashCode>
+      <FileName>Entities\BookingStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
