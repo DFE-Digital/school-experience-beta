@@ -58,11 +58,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{130B74
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceProcessorShared", "src\SchoolExperienceProcessorShared\SchoolExperienceProcessorShared.csproj", "{136D8DA0-0B1D-4B14-A0E7-1FFF3A903EB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolExperienceServicesTests", "tests\SchoolExperienceServicesTests\SchoolExperienceServicesTests.csproj", "{1CCB99DF-54D6-4C1C-A73A-F9296EABB755}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceServicesTests", "tests\SchoolExperienceServicesTests\SchoolExperienceServicesTests.csproj", "{1CCB99DF-54D6-4C1C-A73A-F9296EABB755}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{CE336A60-4806-4210-BB42-D7DD8A2FE30F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolExperienceStatisticsData", "src\SchoolExperienceStatisticsData\SchoolExperienceStatisticsData.csproj", "{0C9F298C-0A44-40CC-BD8B-43C3F2C6B156}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceStatisticsData", "src\SchoolExperienceStatisticsData\SchoolExperienceStatisticsData.csproj", "{0C9F298C-0A44-40CC-BD8B-43C3F2C6B156}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolExperienceCandidateDataServices", "src\SchoolExperienceCandidateDataServices\SchoolExperienceCandidateDataServices.csproj", "{CFFE43CD-3187-4D24-A005-BE0DDF03D247}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -154,6 +156,10 @@ Global
 		{0C9F298C-0A44-40CC-BD8B-43C3F2C6B156}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C9F298C-0A44-40CC-BD8B-43C3F2C6B156}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C9F298C-0A44-40CC-BD8B-43C3F2C6B156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFFE43CD-3187-4D24-A005-BE0DDF03D247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFFE43CD-3187-4D24-A005-BE0DDF03D247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFFE43CD-3187-4D24-A005-BE0DDF03D247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFFE43CD-3187-4D24-A005-BE0DDF03D247}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -185,6 +191,7 @@ Global
 		{1CCB99DF-54D6-4C1C-A73A-F9296EABB755} = {DE56551E-98D8-4775-9982-298F5DD50D31}
 		{CE336A60-4806-4210-BB42-D7DD8A2FE30F} = {5D3E3501-4ADF-4BA6-AFFB-A41B59C67977}
 		{0C9F298C-0A44-40CC-BD8B-43C3F2C6B156} = {CE336A60-4806-4210-BB42-D7DD8A2FE30F}
+		{CFFE43CD-3187-4D24-A005-BE0DDF03D247} = {CE336A60-4806-4210-BB42-D7DD8A2FE30F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C81581AA-60CD-4E9E-8010-6017C8361747}
