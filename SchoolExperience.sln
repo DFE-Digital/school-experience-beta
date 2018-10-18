@@ -64,7 +64,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{CE336A60-4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceStatisticsData", "src\SchoolExperienceStatisticsData\SchoolExperienceStatisticsData.csproj", "{0C9F298C-0A44-40CC-BD8B-43C3F2C6B156}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolExperienceCandidateDataServices", "src\SchoolExperienceCandidateDataServices\SchoolExperienceCandidateDataServices.csproj", "{CFFE43CD-3187-4D24-A005-BE0DDF03D247}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolExperienceCandidateDataServices", "src\SchoolExperienceCandidateDataServices\SchoolExperienceCandidateDataServices.csproj", "{CFFE43CD-3187-4D24-A005-BE0DDF03D247}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolExperienceCandidateDataServicesTests", "tests\SchoolExperienceCandidateDataServicesTests\SchoolExperienceCandidateDataServicesTests.csproj", "{504E7B9C-6FF2-4DAB-B8FE-A6E230A3490C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -160,6 +162,10 @@ Global
 		{CFFE43CD-3187-4D24-A005-BE0DDF03D247}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFFE43CD-3187-4D24-A005-BE0DDF03D247}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFFE43CD-3187-4D24-A005-BE0DDF03D247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{504E7B9C-6FF2-4DAB-B8FE-A6E230A3490C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{504E7B9C-6FF2-4DAB-B8FE-A6E230A3490C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{504E7B9C-6FF2-4DAB-B8FE-A6E230A3490C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{504E7B9C-6FF2-4DAB-B8FE-A6E230A3490C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,6 +198,7 @@ Global
 		{CE336A60-4806-4210-BB42-D7DD8A2FE30F} = {5D3E3501-4ADF-4BA6-AFFB-A41B59C67977}
 		{0C9F298C-0A44-40CC-BD8B-43C3F2C6B156} = {CE336A60-4806-4210-BB42-D7DD8A2FE30F}
 		{CFFE43CD-3187-4D24-A005-BE0DDF03D247} = {CE336A60-4806-4210-BB42-D7DD8A2FE30F}
+		{504E7B9C-6FF2-4DAB-B8FE-A6E230A3490C} = {DE56551E-98D8-4775-9982-298F5DD50D31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C81581AA-60CD-4E9E-8010-6017C8361747}
