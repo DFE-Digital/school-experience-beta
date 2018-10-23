@@ -30,8 +30,10 @@ namespace SchoolExperienceUi.Pages
             var givenName = "first";
             var familyName = "last";
 
-            var claims = new List<Claim>();
-            claims.Add(new Claim("email", emailAddress));
+            var claims = new List<Claim>
+            {
+                new Claim("email", emailAddress)
+            };
 
             var token = _authentication.GenerateToken(claims);
             var result = await _signOn.CreateAccount(token, _options.ClientId, emailAddress, givenName, familyName);

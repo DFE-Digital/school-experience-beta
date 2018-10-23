@@ -21,7 +21,7 @@ namespace SchoolExperienceUi.Services
         {
             _options = options.Value;
             _securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.ClientSecret));
-            _credentials = new SigningCredentials(_securityKey, SecurityAlgorithms.Aes256Encryption);
+            _credentials = new SigningCredentials(_securityKey, SecurityAlgorithms.HmacSha256Signature);
         }
 
         public string GenerateToken(IEnumerable<Claim> claims)
@@ -32,10 +32,10 @@ namespace SchoolExperienceUi.Services
 
             var payload = new JwtPayload(Issuer, Audience, claims, now, now + _options.TokenExpiresAfter);
 
-            var secToken = new JwtSecurityToken(header, payload);
             var handler = new JwtSecurityTokenHandler();
 
             // Token to String so you can use it in your client
+            var secToken = new JwtSecurityToken(header, payload);
             var tokenString = handler.WriteToken(secToken);
 
             return tokenString;
@@ -52,7 +52,7 @@ namespace SchoolExperienceUi.Services
 
         private TokenValidationParameters GetValidationParameters()
         {
-            return new TokenValidationParameters()
+            return new TokenValidationParameters
             {
                 ValidateLifetime = true, // Because there is no expiration in the generated token
                 ValidateAudience = true, // Because there is no audience in the generated token
