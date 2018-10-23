@@ -41,6 +41,8 @@ namespace SchoolExperienceUi
 
             services.AddAutoMapper();
 
+            services.AddDfeSignIn(Configuration);
+
             services.AddHttpClient(FacadeBase.HttpClientName, client =>
             {
                 var baseAddress = Configuration.GetValue<Uri>("ApiBaseAddress");

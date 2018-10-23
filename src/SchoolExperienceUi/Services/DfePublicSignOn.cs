@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace SchoolExperienceUi.Services
 {
-    public partial class DfePublicSignOn
+    public partial class DfePublicSignOn : IDfePublicSignOn
     {
         private readonly IHttpClientFactory _httpClientFactory;
         public const string HttpClientFactoryName = "DfePublicSignOn";

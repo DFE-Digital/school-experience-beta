@@ -21,7 +21,7 @@ namespace SchoolExperienceUi.Services
         {
             _options = options.Value;
             _securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.ClientSecret));
-            _credentials = new SigningCredentials(_securityKey, SecurityAlgorithms.EcdsaSha512Signature);
+            _credentials = new SigningCredentials(_securityKey, SecurityAlgorithms.Aes256Encryption);
         }
 
         public string GenerateToken(IEnumerable<Claim> claims)
